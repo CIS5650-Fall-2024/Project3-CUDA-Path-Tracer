@@ -111,3 +111,54 @@ __host__ __device__ float sphereIntersectionTest(
 
     return glm::length(r.origin - intersectionPoint);
 }
+
+__host__ __device__ float meshIntersectionTest(
+    const Mesh &mesh,
+    const Ray &r,
+    glm::vec3 &intersection_point,
+    glm::vec3 &normal,
+    bool &outside    
+) {
+    glm::vec3 const ro = multiplyMV(mesh.inverseTransform, glm::vec4(r.origin, 1.0f));
+    glm::vec3 const rd = glm::normalize(multiplyMV(mesh.inverseTransform, glm::vec4(r.direction, 0.0f)));
+    Ray rt;
+    rt.origin = ro;
+    rt.direction = rd;
+
+    float t = -1;
+
+    for (int i = 0; i < mesh.num_indices; i += 3) {
+        glm::vec3 triangle[3] = {
+            mesh.vertices[mesh.indices[i]],
+            mesh.vertices[mesh.indices[i + 1]],
+            mesh.vertices[mesh.indices[i + 2]],
+        };
+
+        glm::vec3 barycentric;
+        if (glm::intersectRayTriangle(ro, rd, triangle[0], triangle[1], triangle[2], barycentric)) {
+            const auto ab = triangle[1] - triangle[0];
+            const auto ac = triangle[2] - triangle[0];
+            glm::vec3 intersection = triangle[0] + barycentric.x * ab + barycentric.y * ac;
+
+            float current_t = glm::length(intersection - rt.origin);
+            if (t < 0 || current_t < t) {
+                t = current_t;
+                intersection_point = intersection;
+                normal = glm::normalize(glm::cross(ab, ac));
+            }
+        }
+    }
+
+    if (t < 0) {
+        return -1;
+    }
+
+    intersection_point = multiplyMV(mesh.transform, glm::vec4{intersection_point, 1.f});
+    normal = glm::normalize(multiplyMV(mesh.invTranspose, glm::vec4(normal, 0.f)));
+    outside = glm::dot(normal, rt.direction) < 0;
+    if (!outside) {
+        normal = -normal;
+    }
+
+    return glm::length(r.origin - intersection_point);
+}

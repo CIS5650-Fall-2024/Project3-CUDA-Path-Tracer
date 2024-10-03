@@ -24,12 +24,34 @@ GuiDataContainer* guiData;
 RenderState* renderState;
 int iteration;
 
+std::string string_bools[2] = {"False", "True"};
+
 int width;
 int height;
 
 //-------------------------------
 //-------------MAIN--------------
 //-------------------------------
+
+static void parse_rendering_arg(RenderState &state, const std::string &arg) {
+    if (arg == "s") {
+        state.sort_by_material = true;
+    } else if (arg == "a") {
+        state.anti_aliasing = true;
+    } else if (arg == "d") {
+        state.depth_of_field = true;
+    } else if (arg == "c") {
+        state.stream_compaction = true;
+    } else if (arg == "b") {
+        state.boundary_volume_culling = true;
+    }
+}
+
+static void parse_rendering_args(RenderState &state, int argc, char **argv) {
+    for (int i = 2; i < argc; i++) {
+        parse_rendering_arg(state, argv[i]);
+    }
+};
 
 int main(int argc, char** argv)
 {
@@ -45,6 +67,15 @@ int main(int argc, char** argv)
 
     // Load scene file
     scene = new Scene(sceneFile);
+    parse_rendering_args(scene->state, argc, argv);
+
+    std::cout << "[Rendering Arguments]" << std::endl;
+    std::cout << "Anti Aliasing: " << string_bools[scene->state.anti_aliasing] << std::endl;
+    std::cout << "Sort by Material: " << string_bools[scene->state.sort_by_material] << std::endl;
+    std::cout << "Depth of Field: " << string_bools[scene->state.depth_of_field] << std::endl;
+    std::cout << "Boundary Volume Culling: " << string_bools[scene->state.boundary_volume_culling] << std::endl;
+    std::cout << "Stream Compaction: " << string_bools[scene->state.stream_compaction] << std::endl;
+    std::cout << "\n";
 
     //Create Instance for ImGUIData
     guiData = new GuiDataContainer();
