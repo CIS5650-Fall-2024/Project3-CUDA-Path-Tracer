@@ -8,7 +8,16 @@
  * Computes a cosine-weighted random direction in a hemisphere.
  * Used for diffuse lighting.
  */
-__host__ __device__ glm::vec3 calculateRandomDirectionInHemisphere(
+
+#define COSSAMPLING 1
+
+__host__ __device__ 
+glm::vec3 calculateRandomDirectionInHemisphereCosWeighed(
+    glm::vec3 normal, 
+    thrust::default_random_engine& rng);
+
+__host__ __device__
+glm::vec3 calculateRandomDirectionInHemisphereStratified(
     glm::vec3 normal, 
     thrust::default_random_engine& rng);
 
@@ -39,7 +48,50 @@ __host__ __device__ glm::vec3 calculateRandomDirectionInHemisphere(
  */
 __host__ __device__ void scatterRay(
     PathSegment& pathSegment,
+    const ShadeableIntersection& intersection,
+    const Material& m,
+    thrust::default_random_engine& rng);
+
+void specularBSDF(
+    PathSegment& pathSegment,
     glm::vec3 intersect,
     glm::vec3 normal,
     const Material& m,
     thrust::default_random_engine& rng);
+
+__host__ __device__
+void diffuseBSDF(
+    PathSegment& pathSegment,
+    glm::vec3 intersect,
+    glm::vec3 normal,
+    const Material& m,
+    thrust::default_random_engine& rng);
+
+__host__ __device__
+void schlickBTDF(
+    PathSegment& pathSegment,
+    glm::vec3 intersect,
+    glm::vec3 normal,
+    const Material& m,
+    thrust::default_random_engine& rng);
+
+__host__ __device__
+void scatterBSSRDF(
+    PathSegment& pathSegment,
+    glm::vec3 intersect,
+    glm::vec3 normal,
+    const Material& m,
+    thrust::default_random_engine& rng,
+    bool outside);
+
+__host__ __device__
+float schlick(float cos, float reflectIndex);
+
+__host__ __device__
+void pbrBSDF(
+    PathSegment& pathSegment,
+    glm::vec3 intersect,
+    glm::vec3 normal,
+    const Material& m,
+    thrust::default_random_engine& rng,
+    const ShadeableIntersection& intersection);

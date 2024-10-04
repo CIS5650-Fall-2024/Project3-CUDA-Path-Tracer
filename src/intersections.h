@@ -53,7 +53,8 @@ __host__ __device__ float boxIntersectionTest(
     Ray r,
     glm::vec3& intersectionPoint,
     glm::vec3& normal,
-    bool& outside);
+    bool& outside,
+    glm::vec2& uv);
 
 // CHECKITOUT
 /**
@@ -70,4 +71,35 @@ __host__ __device__ float sphereIntersectionTest(
     Ray r,
     glm::vec3& intersectionPoint,
     glm::vec3& normal,
-    bool& outside);
+    bool& outside,
+    glm::vec2& uv);
+
+__host__ __device__ float meshIntersectionTestBVH(
+    Geom& geom,
+    Ray r,
+    glm::vec3& intersectionPoint,
+    glm::vec3& normal,
+    bool& outside,
+    glm::vec2& uv,
+    //Mesh data
+    BVHNode* bvh, MeshTriangle* meshes, glm::vec3* vertices, glm::vec3* normals, glm::vec2* texcoords, int& materialid);
+
+__host__ __device__ bool aabbIntersectionTest(const AABB& aabb, const Ray& ray);
+
+__host__ __device__ void finalIntersectionTest(
+    const MeshTriangle& m, const glm::vec3* vertices, const glm::vec3* normals, const glm::vec2* texcoords,
+    const Ray& r,
+    float& t_min, glm::vec3& intersectionPoint, int& materialid, glm::vec3& normal, glm::vec2& texcoord);
+
+__host__ __device__ float meshIntersectionTestNaive(
+    Geom& geom,
+    Ray r,
+    glm::vec3& intersectionPoint,
+    glm::vec3& normal,
+    bool& outside,
+    glm::vec2& uv,
+    MeshTriangle* meshes, glm::vec3* vertices, glm::vec3* normals, glm::vec2* texcoords, int& materialid);
+
+__host__ __device__ bool rayTriangleIntersect(
+    const Ray& ray, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2,
+    float& t, glm::vec3& intersectionPoint, glm::vec3& normal, glm::vec2& uv);
