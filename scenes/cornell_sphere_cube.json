@@ -22,9 +22,35 @@
       "RGB": [ 0.98, 0.98, 0.98 ],
       "ROUGHNESS": 0.0
     },
+    "imperfect_specular_white": {
+      "TYPE": "Specular",
+      "RGB": [ 0.98, 0.98, 0.98 ],
+      "ROUGHNESS": 0.5
+    },
     "transparent_white": {
       "TYPE": "Transparent",
       "RGB": [ 0.98, 0.98, 0.98 ],
+      "ROUGHNESS": 0.0,
+      "TRANSPARENCY": 1.0,
+      "INDEX": 1.5
+    },
+    "transparent_blue": {
+      "TYPE": "Transparent",
+      "RGB": [ 0.50, 0.50, 0.98 ],
+      "ROUGHNESS": 0.0,
+      "TRANSPARENCY": 1.0,
+      "INDEX": 1.5
+    },
+    "transparent_yellow": {
+      "TYPE": "Transparent",
+      "RGB": [ 0.98, 0.98, 0.70 ],
+      "ROUGHNESS": 0.0,
+      "TRANSPARENCY": 1.0,
+      "INDEX": 1.5
+    },
+    "transparent_purple": {
+      "TYPE": "Transparent",
+      "RGB": [ 0.98, 0.80, 0.98 ],
       "ROUGHNESS": 0.0,
       "TRANSPARENCY": 1.0,
       "INDEX": 1.5
@@ -41,12 +67,13 @@
     "UP": [ 0.0, 1.0, 0.0 ],
     "LENSRADIUS": 1.0,
     "F": 10.0
+
   },
   "Objects": [
     {
       "TYPE": "cube",
       "MATERIAL": "light",
-      "TRANS": [ 0.0, 10.0, 2.0 ],
+      "TRANS": [ 0.0, 10.0, 0.0 ],
       "ROTAT": [ 0.0, 0.0, 0.0 ],
       "SCALE": [ 3.0, 0.3, 3.0 ]
     },
@@ -86,23 +113,65 @@
       "SCALE": [ 0.01, 10.0, 10.0 ]
     },
     {
-      "TYPE": "mesh",
-      "NAME": "wahoo",
-      "TEXTURE": "wahoo.bmp",
+      "TYPE": "sphere",
+      "NAME": "",
+      "TEXTURE": "",
       "NORM": "",
-      "MATERIAL": "diffuse_white",
+      "MATERIAL": "specular_white",
       "TRANS": [ -1.0, 4.0, -1.0 ],
       "ROTAT": [ 0.0, 0.0, 0.0 ],
-      "SCALE": [ 1.0, 1.0, 1.0 ]
+      "SCALE": [ 3.0, 3.0, 3.0 ]
     },
     {
-      "TYPE": "mesh",
-      "NAME": "dodecahedron",
-      "TEXTURE": "154.jpg",
-      "NORM": "154_norm.jpg",
-      "MATERIAL": "diffuse_white",
-      "TRANS": [ 2.0, 3.0, 2.0 ],
-      "ROTAT": [ 60.0, 60.0, 60.0 ],
+      "TYPE": "sphere",
+      "NAME": "",
+      "TEXTURE": "",
+      "NORM": "",
+      "MATERIAL": "imperfect_specular_white",
+      "TRANS": [ 2.0, 3.0, 6.0 ],
+      "ROTAT": [ 0.0, 0.0, 0.0 ],
+      "SCALE": [ 2.0, 2.0, 2.0 ]
+    },
+
+    {
+      "TYPE": "sphere",
+      "NAME": "",
+      "TEXTURE": "",
+      "NORM": "",
+      "MATERIAL": "transparent_purple",
+      "TRANS": [ 1.5, 5.0, 5.0 ],
+      "ROTAT": [ 0.0, 0.0, 0.0 ],
+      "SCALE": [ 1.5, 1.5, 1.5 ]
+    },
+
+    {
+      "TYPE": "cube",
+      "NAME": "",
+      "TEXTURE": "",
+      "NORM": "",
+      "MATERIAL": "transparent_blue",
+      "TRANS": [ -3.0, 6.0, 3.0 ],
+      "ROTAT": [ 20.0, 30.0, 40.0 ],
+      "SCALE": [ 2.0, 2.0, 2.0 ]
+    },
+    {
+      "TYPE": "cube",
+      "NAME": "",
+      "TEXTURE": "",
+      "NORM": "",
+      "MATERIAL": "transparent_yellow",
+      "TRANS": [ 2.0, 7.0, 0.0 ],
+      "ROTAT": [ 0.0, 0.0, 0.0 ],
+      "SCALE": [ 4.0, 4.0, 4.0 ]
+    },
+    {
+      "TYPE": "cube",
+      "NAME": "",
+      "TEXTURE": "",
+      "NORM": "",
+      "MATERIAL": "transparent_white",
+      "TRANS": [ -1.5, 4.0, 5.0 ],
+      "ROTAT": [ 70.0, 30.0, 10.0 ],
       "SCALE": [ 2.0, 2.0, 2.0 ]
     }
   ]

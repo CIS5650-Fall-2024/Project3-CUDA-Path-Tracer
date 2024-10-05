@@ -75,7 +75,7 @@ You will need to implement the following features:
 
 The following features are a non-exhaustive list of features you can choose from based on your own interests and motivation. Each feature has an associated score (represented in emoji numbers, eg. :five:).
 
-**You are required to implement additional features of your choosing from the list below totalling up to minimum 10 score points.**
+**You are required to implement additional features of your choosing from the list beslow totalling up to minimum 10 score points.**
 
 An example set of optional features is:
 
