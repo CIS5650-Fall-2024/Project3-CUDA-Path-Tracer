@@ -2,6 +2,7 @@
 #include "preview.h"
 #include <cstring>
 
+
 static std::string startTimeString;
 
 // For camera controls
@@ -20,6 +21,7 @@ glm::vec3 cameraPosition;
 glm::vec3 ogLookAt; // for recentering the camera
 
 Scene* scene;
+Scene* test;
 GuiDataContainer* guiData;
 RenderState* renderState;
 int iteration;
@@ -33,6 +35,25 @@ int height;
 
 int main(int argc, char** argv)
 {
+# if 0
+    //import tinygltf
+    std::string gltfFilePath = "../scenes/DiffuseTransmissionTeacup/glTF-Binary/DiffuseTransmissionTeacup.glb";
+    tinygltf::Model model = mesh::LoadModel(gltfFilePath);
+
+    if (model.meshes.size() > 0) {
+        std::cout << "Successfully loaded glTF model with " << model.meshes.size() << " meshes." << std::endl;
+    }
+    else {
+        std::cerr << "Failed to load any meshes from the glTF model." << std::endl;
+    }
+# endif
+
+#if 0
+    std::string objFilePathtest = "../scenes/wahoo.obj";
+    test = new Scene();
+    test->loadFromOBJ(objFilePathtest);
+#endif
+
     startTimeString = currentTimeString();
 
     if (argc < 2)

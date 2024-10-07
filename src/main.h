@@ -19,6 +19,7 @@
 #include "pathtrace.h"
 #include "utilities.h"
 #include "scene.h"
+#include "mesh.h"
 
 using namespace std;
 

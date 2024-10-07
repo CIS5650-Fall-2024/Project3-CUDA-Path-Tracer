@@ -40,6 +40,10 @@
         "LOOKAT":[0.0,5.0,0.0],
         "UP":[0.0,1.0,0.0]
     },
+    "Environment":
+    {
+        "File":"pureSky.hdr"
+    },
     "Objects":
     [
         {
