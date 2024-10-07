@@ -38,6 +38,10 @@ __host__ __device__ inline glm::vec3 multiplyMV(glm::mat4 m, glm::vec4 v)
     return glm::vec3(m * v);
 }
 
+__host__ __device__ inline glm::vec3 multiplyMV3(glm::mat3 m, glm::vec3 v)
+{
+    return glm::vec3(m * v);
+}
 // CHECKITOUT
 /**
  * Test intersection between a ray and a transformed cube. Untransformed,
@@ -71,3 +75,9 @@ __host__ __device__ float sphereIntersectionTest(
     glm::vec3& intersectionPoint,
     glm::vec3& normal,
     bool& outside);
+
+__device__ float meshIntersectionMoller(
+    Geom& geom, 
+    const Ray& ray, 
+    const Triangle* triangles, 
+    glm::vec3& normal);

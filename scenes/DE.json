@@ -1,0 +1,123 @@
+{
+    "Materials":
+    {
+        "light":
+        {
+            "TYPE":"Emitting",
+            "RGB":[1.0, 1.0, 1.0],
+            "EMITTANCE":15.0,
+            "ROUGHNESS":0.0
+        },
+        "light1":
+        {
+            "TYPE":"Emitting",
+            "RGB":[1.0, 1.0, 1.0],
+            "EMITTANCE":3.0,
+            "ROUGHNESS":0.0
+        },
+        "diffuse_white":
+        {
+            "TYPE":"Diffuse",
+            "RGB":[0.98, 0.98, 0.98],
+            "ROUGHNESS":0.0
+        },
+        "diffuse_red":
+        {
+            "TYPE":"Diffuse",
+            "RGB":[0.85, 0.35, 0.35],
+            "ROUGHNESS":0.0
+        },
+        "diffuse_green":
+        {
+            "TYPE":"Diffuse",
+            "RGB":[0.35, 0.85, 0.35],
+            "ROUGHNESS":0.0
+        },
+        "specular_white":
+        {
+            "TYPE":"Specular",
+            "RGB":[0.98, 0.98, 0.98],
+            "ROUGHNESS":1.0,
+            "REFLECTIVE":0.0
+        },
+        "transmit":
+        {
+            "TYPE":"Transmit",
+            "RGB":[0.98, 0.98, 0.98],
+            "IOR":1.5,
+            "ROUGHNESS":0.0
+        },
+        "subsurface_cyan":
+        {
+            "TYPE":"Subsurface",
+            "RGB":[1.0, 1.0, 1.0],
+            "IOR":1.5,
+            "ROUGHNESS":1.0,
+            "SUBSURFACE":0.0
+            
+        },
+        "diffuse_deepblue":
+        {
+            "TYPE":"Diffuse",
+            "RGB":[0.2, 0.2, 0.2],
+            "ROUGHNESS":0.0
+        },
+        "disney_brdf_sample":
+        {
+            "TYPE":"Disney",
+            "RGB":[0.82, 0.67, 0.16],
+            "METALLIC":0.0,
+            "SUBSURFACE":0.0,
+            "SPECULAR":0.5,
+            "ROUGHNESS":0.5,
+            "SPECULARTINT":0.0,
+            "ANISOTROPIC":0.0,
+            "SHEEN":0.0,
+            "SHEENTINT":0.5,
+            "CLEARCOAT":0.0,
+            "CLEARCOATGLOSS":0.1
+        },
+        "my_brdf":
+        {
+            "TYPE":"Disney",
+            "RGB":[0.7, 0.7, 0.7],
+            "METALLIC":0.0,
+            "SUBSURFACE":0.0,
+            "SPECULAR":1.0,
+            "ROUGHNESS":0.2,
+            "SPECULARTINT":1.0,
+            "ANISOTROPIC":0.0,
+            "SHEEN":0.0,
+            "SHEENTINT":0.0,
+            "CLEARCOAT":0.0,
+            "CLEARCOATGLOSS":0.0
+        }
+    },
+    "Camera":
+    {
+        "RES":[1980,1080],
+        "FOVY":45.0,
+        "ITERATIONS":5000,
+        "DEPTH":8,
+        "FILE":"cornell",
+        "EYE":[0.0,5.0,10.5],
+        "LOOKAT":[0.0,5.0,0.0],
+        "UP":[0.0,1.0,0.0]
+    },
+    "Objects":
+    [
+        {
+            "TYPE":"mesh",
+            "MATERIAL":"transmit",
+            "FILENAME":"D:\\Fall2024\\CIS5650\\Project3-CUDA-Path-Tracer\\scenes\\objs\\Dragon.obj",
+            "TRANS":[0.0,4.6,0.0],
+            "ROTAT":[-85.0,0.0,0.0],
+            "SCALE":[0.08, 0.08, 0.08]
+        }
+    ],
+    "Environment":
+    {
+        "FILENAME":"D:\\Fall2024\\CIS5650\\Project3-CUDA-Path-Tracer\\scenes\\hdri\\night1.hdr"
+    }
+    
+}

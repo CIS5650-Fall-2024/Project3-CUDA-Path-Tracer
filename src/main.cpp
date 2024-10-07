@@ -22,6 +22,7 @@ glm::vec3 ogLookAt; // for recentering the camera
 Scene* scene;
 GuiDataContainer* guiData;
 RenderState* renderState;
+
 int iteration;
 
 int width;
@@ -34,7 +35,9 @@ int height;
 int main(int argc, char** argv)
 {
     startTimeString = currentTimeString();
-
+    int sharedMemoryPerBlock;
+    cudaDeviceGetAttribute(&sharedMemoryPerBlock, cudaDevAttrMaxSharedMemoryPerBlock, 0);
+    printf("Max shared memory per block: %d bytes\n", sharedMemoryPerBlock);
     if (argc < 2)
     {
         printf("Usage: %s SCENEFILE.json\n", argv[0]);
@@ -42,10 +45,18 @@ int main(int argc, char** argv)
     }
 
     const char* sceneFile = argv[1];
-
     // Load scene file
-    scene = new Scene(sceneFile);
+    scene = new Scene("D:\\Fall2024\\CIS5650\\Project3-CUDA-Path-Tracer\\scenes\\DS.json");
 
+    // test loading obj
+    Material newMaterial(glm::vec3(15, 154, 255) / 255.f);
+	scene->addMaterial(newMaterial);
+    //scene->loadObj("D:/Fall2024/CIS5650/Project3-CUDA-Path-Tracer/scenes/objs/wahoo.obj", newMaterial.materialId, { 0, 3.5, 2 }, { 0, 0, 0 }, {.7, .7, .7});
+	//scene->createCube(newMaterial.materialId, { -2, 0, 0 }, { 0, 0, 0 }, { 1, 2, 1 });
+	//scene->createSphere(newMaterial.materialId, { 0, 0, 0 }, { 0, 0, 0 }, { 1, 1, 1 });
+
+    // load hdri
+    
     //Create Instance for ImGUIData
     guiData = new GuiDataContainer();
 
@@ -72,8 +83,25 @@ int main(int argc, char** argv)
     ogLookAt = cam.lookAt;
     zoom = glm::length(cam.position - ogLookAt);
 
+    
     // Initialize CUDA and GL components
     init();
+
+    // load hdri
+    //scene->loadEnvMap("D:\\Fall2024\\CIS5650\\Project3-CUDA-Path-Tracer\\scenes\\hdri\\night1.hdr");
+    scene->loadEnvMap();
+
+
+
+#ifdef USE_BVH
+    // create bvh
+    scene->createBVH();
+	//cudaMemset(dev_triangles, 0, scene->triangles.size() * sizeof(Triangle));
+	//cudaMemcpy(dev_triangles, scene->triangles.data(), scene->triangles.size() * sizeof(Triangle), cudaMemcpyHostToDevice);
+#endif
+    initSceneCuda(scene->geoms.data(), scene->materials.data(), scene->triangles.data(), scene->lights.data(), scene->geoms.size(), scene->materials.size(), scene->triangles.size(), scene->lights.size());
+    gpuInfo = new GPUInfo();
+    gpuInfo->triangleCount = scene->triangles.size();
 
     // Initialize ImGui Data
     InitImguiData(guiData);
@@ -113,6 +141,7 @@ void saveImage()
 
 void runCuda()
 {
+    
     if (camchanged)
     {
         iteration = 0;
@@ -143,18 +172,26 @@ void runCuda()
         pathtraceInit(scene);
     }
 
+#ifndef debug
     if (iteration < renderState->iterations)
+#else
+    if (iteration <= 4)
+#endif
     {
+
         uchar4* pbo_dptr = NULL;
+		uchar4* pbo_post_dptr = NULL;
         iteration++;
         cudaGLMapBufferObject((void**)&pbo_dptr, pbo);
+		cudaGLMapBufferObject((void**)&pbo_post_dptr, pbo_post);
 
         // execute the kernel
         int frame = 0;
-        pathtrace(pbo_dptr, frame, iteration);
 
+        pathtrace(pbo_dptr, pbo_post_dptr, frame, iteration);
         // unmap buffer object
         cudaGLUnmapBufferObject(pbo);
+		cudaGLUnmapBufferObject(pbo_post);
     }
     else
     {
@@ -240,3 +277,4 @@ void mousePositionCallback(GLFWwindow* window, double xpos, double ypos)
     lastX = xpos;
     lastY = ypos;
 }
+

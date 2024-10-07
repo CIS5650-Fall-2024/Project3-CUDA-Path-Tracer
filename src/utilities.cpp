@@ -11,6 +11,8 @@
 
 #include "utilities.h"
 
+
+
 float utilityCore::clamp(float f, float min, float max)
 {
     if (f < min)

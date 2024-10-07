@@ -3,6 +3,10 @@
 #include "intersections.h"
 #include <glm/glm.hpp>
 #include <thrust/random.h>
+#include "PTDirectives.h"
+#include "utilities.h"
+#include "bvh.h"
+
 // CHECKITOUT
 /**
  * Computes a cosine-weighted random direction in a hemisphere.
@@ -37,9 +41,28 @@ __host__ __device__ glm::vec3 calculateRandomDirectionInHemisphere(
  *
  * You may need to change the parameter list for your purposes!
  */
-__host__ __device__ void scatterRay(
+__device__ void scatterRay(
     PathSegment& pathSegment,
-    glm::vec3 intersect,
-    glm::vec3 normal,
+    const ShadeableIntersection& intersection,
+    const glm::vec3& intersect,
     const Material& m,
-    thrust::default_random_engine& rng);
+    thrust::default_random_engine& rng,
+    int num_lights,
+    LinearBVHNode* dev_nodes,
+    Triangle* dev_triangles,
+    Light* dev_lights,
+    cudaTextureObject_t envMap);
+
+
+__device__ void MIS(
+    PathSegment& pathSegment,
+    const ShadeableIntersection& intersection,
+    const glm::vec3& intersect,
+    const Material& m,
+    thrust::default_random_engine& rng,
+    int num_lights,
+    LinearBVHNode* dev_nodes,
+    Triangle* dev_triangles,
+    Light* dev_lights,
+    cudaTextureObject_t envMap,
+    int depth);

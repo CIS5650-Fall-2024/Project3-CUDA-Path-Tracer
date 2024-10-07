@@ -61,6 +61,15 @@ set(headers
     src/sceneStructs.h
     src/preview.h
     src/utilities.h
+    src/tiny_obj_loader.h
+    src/PTDirectives.h
+    src/bvh.h
+    src/texture.h
+    src/memoryArena.h
+    src/cudaUtilities.h
+    src/light.h
+    src/pbr.h
+    src/disneybsdf.h
 )
 
 set(sources
@@ -74,6 +83,10 @@ set(sources
     src/scene.cpp
     src/preview.cpp
     src/utilities.cpp
+    src/tiny_obj_loader.cpp
+    src/bvh.cu
+    src/texture.cu
+    src/cudaUtilities.cu
 )
 
 set(imgui_headers

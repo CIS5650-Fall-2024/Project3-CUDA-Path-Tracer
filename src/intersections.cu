@@ -111,3 +111,19 @@ __host__ __device__ float sphereIntersectionTest(
 
     return glm::length(r.origin - intersectionPoint);
 }
+
+__device__ float meshIntersectionMoller(Geom& geom, const Ray& ray, const Triangle* triangles, glm::vec3& normal)
+{
+	float mint = FLT_MAX;
+	for (int i = geom.triangleStartIdx; i < geom.triangleEndIdx; i++)
+	{
+		const Triangle& triangle = triangles[i];
+		float t = triangle.intersect(ray);
+		if (t > 0 && t < mint)
+		{
+			mint = t;
+			normal = triangle.getNormal();
+		}
+	}
+	return mint;
+}
