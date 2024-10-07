@@ -221,6 +221,10 @@ void RenderImGui()
     static int counter = 0;
 
     ImGui::Begin("Path Tracer Analytics");                  // Create a window called "Hello, world!" and append into it.
+
+    bool tmp = imguiData->scene->useDirectLighting;
+    ImGui::Checkbox("Use direct lighting", &imguiData->scene->useDirectLighting);
+    *(imguiData->camChanged) = (tmp != imguiData->scene->useDirectLighting);
     
     // LOOK: Un-Comment to check the output window and usage
     //ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)

@@ -47,7 +47,7 @@ int main(int argc, char** argv)
     scene = new Scene(sceneFile);
 
     //Create Instance for ImGUIData
-    guiData = new GuiDataContainer();
+    guiData = new GuiDataContainer(scene, &camchanged);
 
     // Set up camera stuff from loaded path tracer settings
     iteration = 0;

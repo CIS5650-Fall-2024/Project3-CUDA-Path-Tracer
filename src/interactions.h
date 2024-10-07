@@ -3,14 +3,50 @@
 #include "intersections.h"
 #include <glm/glm.hpp>
 #include <thrust/random.h>
+
+__device__ glm::vec3 sampleTexture(const Texture& texture, const glm::vec2 uv);
+
 // CHECKITOUT
 /**
  * Computes a cosine-weighted random direction in a hemisphere.
  * Used for diffuse lighting.
  */
 __host__ __device__ glm::vec3 calculateRandomDirectionInHemisphere(
-    glm::vec3 normal, 
-    thrust::default_random_engine& rng);
+    glm::vec3 normal,
+    thrust::default_random_engine &rng);
+
+__host__ __device__ glm::vec2 calculateRandomPointOnDisk(
+    thrust::default_random_engine &rng);
+
+// Represents a radiance or BSDF sample
+struct Sample
+{
+    glm::vec3 incomingDirection;
+    glm::vec3 value;
+    float pdf;
+    bool delta;
+};
+
+// Samples direct illumination from a light
+__host__ __device__ Sample sampleLight(
+    glm::vec3 viewPoint,
+    const Geom &geom,
+    const Material *materials,
+    thrust::default_random_engine &rng);
+
+__device__ Sample sampleBsdf(
+    const Material &material,
+    glm::vec2 uv,
+    glm::vec3 normal,
+    glm::vec3 outgoingDirection,
+    thrust::default_random_engine &rng);
+
+__host__ __device__ glm::vec3 getBsdf(
+    const Material &material,
+    glm::vec3 normal,
+    glm::vec3 incomingDirection,
+    glm::vec3 outgoingDirection
+);
 
 /**
  * Scatter a ray with some probabilities according to the material properties.
@@ -37,9 +73,10 @@ __host__ __device__ glm::vec3 calculateRandomDirectionInHemisphere(
  *
  * You may need to change the parameter list for your purposes!
  */
-__host__ __device__ void scatterRay(
-    PathSegment& pathSegment,
+__device__ void scatterRay(
+    PathSegment &pathSegment,
     glm::vec3 intersect,
     glm::vec3 normal,
-    const Material& m,
-    thrust::default_random_engine& rng);
+    const Material &m,
+    glm::vec2 uv,
+    thrust::default_random_engine &rng);

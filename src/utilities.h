@@ -14,13 +14,6 @@
 #define SQRT_OF_ONE_THIRD 0.5773502691896257645091487805019574556476f
 #define EPSILON           0.00001f
 
-class GuiDataContainer
-{
-public:
-    GuiDataContainer() : TracedDepth(0) {}
-    int TracedDepth;
-};
-
 namespace utilityCore
 {
     extern float clamp(float f, float min, float max);

@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "scene.h"
+#include "guiDataContainer.h"
 
 void InitDataContainer(GuiDataContainer* guiData);
 void pathtraceInit(Scene *scene);
