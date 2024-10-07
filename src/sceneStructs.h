@@ -10,7 +10,9 @@
 enum GeomType
 {
     SPHERE,
-    CUBE
+    CUBE,
+    OBJ, // read obj file
+    ERROR
 };
 
 struct Ray
@@ -31,6 +33,38 @@ struct Geom
     glm::mat4 invTranspose;
 };
 
+// Mesh Data uses for storing all the data info when parsing obj file
+struct Mesh_Data 
+{
+    glm::vec3 point;
+    glm::vec3 normal;
+    glm::vec2 coordinate;
+    glm::vec3 tangent;
+    int material;
+};
+struct BVH_Data
+{
+    std::vector<Mesh_Data> bvh_mesh_data;
+    glm::vec3 center;
+    float radius;
+    int child_indices[2]{ -1, -1 };
+};
+struct BVH_Main_Data
+{
+    int index;
+    int count;
+    glm::vec3 center;
+    float radius;
+    int child_indices[2]{ -1, -1 };
+};
+struct Texture_Data 
+{
+    int width;
+    int height;
+    int index;
+};
+
+
 struct Material
 {
     glm::vec3 color;
@@ -43,6 +77,8 @@ struct Material
     float hasRefractive;
     float indexOfRefraction;
     float emittance;
+    int albedo = -1;
+    int normal = -1;
 };
 
 struct Camera
@@ -81,5 +117,19 @@ struct ShadeableIntersection
 {
   float t;
   glm::vec3 surfaceNormal;
+  glm::vec3 tangent;
+  glm::vec2 uvCoord;
   int materialId;
+};
+
+struct checkPathComplete {
+    __host__ __device__ bool operator()(const PathSegment& pathSegment) {
+        return pathSegment.remainingBounces <= 0;
+    }
+};
+
+struct compareIntersections {
+    __host__ __device__ bool operator()(const ShadeableIntersection& a, const ShadeableIntersection& b) {
+        return a.materialId < b.materialId;
+    }
 };

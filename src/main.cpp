@@ -1,6 +1,8 @@
 #include "main.h"
 #include "preview.h"
 #include <cstring>
+#define TINYOBJLOADER_IMPLEMENTATION
+#include "tiny_obj_loader.h"
 
 static std::string startTimeString;
 
@@ -34,14 +36,15 @@ int height;
 int main(int argc, char** argv)
 {
     startTimeString = currentTimeString();
+    const char* sceneFile = nullptr;
 
     if (argc < 2)
     {
-        printf("Usage: %s SCENEFILE.json\n", argv[0]);
-        return 1;
+        sceneFile = "../scenes/test2.json";
+        //sceneFile = "../scenes/sphere.json";
     }
 
-    const char* sceneFile = argv[1];
+    //const char* sceneFile = argv[1];
 
     // Load scene file
     scene = new Scene(sceneFile);

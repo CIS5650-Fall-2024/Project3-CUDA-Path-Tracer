@@ -111,3 +111,44 @@ __host__ __device__ float sphereIntersectionTest(
 
     return glm::length(r.origin - intersectionPoint);
 }
+
+__host__ __device__ float meshIntersectionTest(
+    Ray r,
+    glm::vec3 points[3]
+)
+{
+    // triangle edges
+    glm::vec3 e1 = points[1] - points[0];
+    glm::vec3 e2 = points[2] - points[0];
+    // compute normal of ray and edge2
+    glm::vec3 h = glm::cross(r.direction, e2);
+    // check parallel
+    float a = glm::dot(e1, h);
+    if (a > -EPSILON && a < EPSILON) return FLT_MAX;
+    float f = 1.0f / a;
+    glm::vec3 s = r.origin - points[0];
+    float u = f * glm::dot(s, h);
+    if (u < 0.0f || u > 1.0f) return FLT_MAX;
+    glm::vec3 q = glm::cross(s, e1);
+    float v = f * glm::dot(r.direction, q);
+    if (v < 0.0f || u + v > 1.0f) return FLT_MAX;
+    float t = f * glm::dot(e2, q);
+    return (t > EPSILON) ? t : FLT_MAX;
+}
+
+__host__ __device__ glm::vec3 barycentricWeightCompute(
+    glm::vec3 intersection,
+    glm::vec3 points[3]
+)
+{
+    // Compute full triangle area
+    float size = glm::length(glm::cross(points[1] - points[0], points[2] - points[1]));
+
+    // Compute sub-triangle areas
+    float s0 = glm::length(glm::cross(intersection - points[1], intersection - points[2]));
+    float s1 = glm::length(glm::cross(intersection - points[0], intersection - points[2]));
+    float s2 = glm::length(glm::cross(intersection - points[0], intersection - points[1]));
+
+    // Return barycentric weights
+    return glm::vec3(s0, s1, s2) / size;
+}

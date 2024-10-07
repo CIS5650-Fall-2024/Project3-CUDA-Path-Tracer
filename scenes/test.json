@@ -26,12 +26,15 @@
             "TYPE":"Diffuse",
             "RGB":[0.35, 0.85, 0.35]
         },
-        "specular_white":
-        {
-            "TYPE":"Specular",
-            "RGB":[0.98, 0.98, 0.98],
-            "ROUGHNESS":0.0
-        }
+      "specular_white": {
+        "TYPE": "Specular",
+        "RGB": [ 0.98, 0.98, 0.98 ],
+        "ROUGHNESS": 0.0
+      },
+      "checker": {
+        "TYPE": "Diffuse",
+        "ALBEDO": "checker_albedo"
+      }
     },
     "Camera":
     {
@@ -89,11 +92,12 @@
         "SCALE": [ 0.01, 10.0, 10.0 ]
       },
       {
-        "TYPE": "sphere",
-        "MATERIAL": "specular_white",
-        "TRANS": [ -1.0, 4.0, -1.0 ],
+        "TYPE": "obj",
+        "NAME": "stone",
+        "MATERIAL": "diffuse_blue",
+        "TRANS": [ 0.0, 0.0, 0.0 ],
         "ROTAT": [ 0.0, 0.0, 0.0 ],
-        "SCALE": [ 3.0, 3.0, 3.0 ]
+        "SCALE": [ 1.0, 1.0, 1.0 ]
       }
     ]
 }
