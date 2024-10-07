@@ -7,6 +7,7 @@
 #include "glm/glm.hpp"
 #include "utilities.h"
 #include "sceneStructs.h"
+#include "meshio.h"
 
 using namespace std;
 
@@ -17,9 +18,11 @@ private:
     void loadFromJSON(const std::string& jsonName);
 public:
     Scene(string filename);
-    ~Scene();
+    ~Scene() {}; 
 
     std::vector<Geom> geoms;
+    std::vector<Triangle> tris; 
     std::vector<Material> materials;
+    std::vector<meshio::ImageData> textures; 
     RenderState state;
 };

@@ -10,7 +10,9 @@
 enum GeomType
 {
     SPHERE,
-    CUBE
+    CUBE,
+    MESH,
+    TRIANGLE
 };
 
 struct Ray
@@ -29,18 +31,39 @@ struct Geom
     glm::mat4 transform;
     glm::mat4 inverseTransform;
     glm::mat4 invTranspose;
+
+    // MESH type parameters
+    glm::vec3 minBoundingBox; 
+    glm::vec3 maxBoundingBox;
+    size_t triStart; 
+    size_t triNum; 
+};
+
+struct Triangle {
+  glm::vec3 trianglePos[3];
+  glm::vec3 triangleNor[3];
+  glm::vec2 triangleTex[3];
 };
 
 struct Material
 {
-    glm::vec3 color;
+    //struct
+    //{
+    //    float exponent;
+    //    glm::vec3 color;
+    //} specular;
+
     struct
     {
-        float exponent;
-        glm::vec3 color;
-    } specular;
-    float hasReflective;
-    float hasRefractive;
+      int albedo; 
+      int normal; 
+    } textureIdx;
+
+    glm::vec3 color;
+    float hasReflective;      // Is it perfect mirror  
+    float hasTransmissive;    // is it glass
+    float isMicrofacet;       // is it plastic
+    float roughness; 
     float indexOfRefraction;
     float emittance;
 };
@@ -72,6 +95,8 @@ struct PathSegment
     glm::vec3 color;
     int pixelIndex;
     int remainingBounces;
+    bool isFinished; 
+    bool isTerminated; 
 };
 
 // Use with a corresponding PathSegment to do:
@@ -81,5 +106,15 @@ struct ShadeableIntersection
 {
   float t;
   glm::vec3 surfaceNormal;
+  
+  // for textures
+  glm::vec2 texSample; 
+
   int materialId;
+  bool outside; 
+
+  __host__ __device__ bool operator<(const ShadeableIntersection& other) const
+  {
+    return materialId < other.materialId;
+  }
 };

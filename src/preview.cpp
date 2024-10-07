@@ -15,6 +15,8 @@ GuiDataContainer* imguiData = NULL;
 ImGuiIO* io = nullptr;
 bool mouseOverImGuiWinow = false;
 
+
+
 std::string currentTimeString()
 {
     time_t now;
@@ -196,6 +198,9 @@ bool init()
     glUseProgram(passthroughProgram);
     glActiveTexture(GL_TEXTURE0);
 
+    // Initialize the OIDN device once
+    
+
     return true;
 }
 
@@ -234,6 +239,7 @@ void RenderImGui()
     //    counter++;
     //ImGui::SameLine();
     //ImGui::Text("counter = %d", counter);
+    ImGui::Text("Iterations: %d", imguiData->iterations);
     ImGui::Text("Traced Depth %d", imguiData->TracedDepth);
     ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
     ImGui::End();

@@ -15,11 +15,15 @@ static bool camchanged = true;
 static float dtheta = 0, dphi = 0;
 static glm::vec3 cammove;
 
+//extern MeshAttributes testMesh; 
+
 float zoom, theta, phi;
 glm::vec3 cameraPosition;
 glm::vec3 ogLookAt; // for recentering the camera
 
-Scene* scene;
+std::unique_ptr<Scene> scene;
+std::unique_ptr<oidn::DeviceRef> device;
+
 GuiDataContainer* guiData;
 RenderState* renderState;
 int iteration;
@@ -44,7 +48,7 @@ int main(int argc, char** argv)
     const char* sceneFile = argv[1];
 
     // Load scene file
-    scene = new Scene(sceneFile);
+    scene = std::unique_ptr<Scene>(new Scene(sceneFile));
 
     //Create Instance for ImGUIData
     guiData = new GuiDataContainer();
@@ -79,6 +83,10 @@ int main(int argc, char** argv)
     InitImguiData(guiData);
     InitDataContainer(guiData);
 
+    // Initialize OIDN
+    device = make_unique<oidn::DeviceRef>(oidn::newDevice());
+    device->commit(); 
+
     // GLFW main loop
     mainLoop();
 
@@ -97,7 +105,7 @@ void saveImage()
         {
             int index = x + (y * width);
             glm::vec3 pix = renderState->image[index];
-            img.setPixel(width - 1 - x, y, glm::vec3(pix) / samples);
+            img.setPixel(width - 1 - x, y, glm::vec3(pix));
         }
     }
 
@@ -137,13 +145,17 @@ void runCuda()
     // Map OpenGL buffer object for writing from CUDA on a single GPU
     // No data is moved (Win & Linux). When mapped to CUDA, OpenGL should not use this buffer
 
+    if (guiData) {
+      guiData->iterations = iteration; 
+    }
+
     if (iteration == 0)
     {
         pathtraceFree();
-        pathtraceInit(scene);
+        pathtraceInit(scene.get());
     }
 
-    if (iteration < renderState->iterations)
+    if (iteration < renderState->iterations) // renderState->iterations
     {
         uchar4* pbo_dptr = NULL;
         iteration++;
@@ -161,7 +173,7 @@ void runCuda()
         saveImage();
         pathtraceFree();
         cudaDeviceReset();
-        exit(EXIT_SUCCESS);
+        std::exit(EXIT_SUCCESS); 
     }
 }
 
