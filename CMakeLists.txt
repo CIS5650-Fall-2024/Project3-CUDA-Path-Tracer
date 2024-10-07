@@ -50,6 +50,13 @@ set(GLM_ROOT_DIR "${CMAKE_SOURCE_DIR}/external")
 find_package(GLM REQUIRED)
 include_directories(${GLM_INCLUDE_DIRS})
 
+set(OIDN_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external/include/OpenImageDenoise")
+set(OIDN_LIBRARY "${CMAKE_SOURCE_DIR}/external/lib/OpenImageDenoise.lib")
+set(OIDN_CORE_LIBRARY "${CMAKE_SOURCE_DIR}/external/lib/OpenImageDenoise_core.lib")
+include_directories(${OIDN_INCLUDE_DIR})
+link_directories("${CMAKE_SOURCE_DIR}/external/lib")
+
+
 set(headers
     src/main.h
     src/image.h
@@ -61,6 +68,10 @@ set(headers
     src/sceneStructs.h
     src/preview.h
     src/utilities.h
+    #src/shape.h
+    #src/mesh.h
+    #src/transform.h
+    #src/globals.h
 )
 
 set(sources
@@ -74,6 +85,9 @@ set(sources
     src/scene.cpp
     src/preview.cpp
     src/utilities.cpp
+    #src/shape.cpp
+    #src/mesh.cpp
+    #src/transform.cpp
 )
 
 set(imgui_headers
@@ -98,20 +112,32 @@ set(imgui_sources
     src/ImGui/imgui_widgets.cpp
 )
 
+set(tinyobj_headers
+    src/tinyobj/tiny_obj_loader.h
+    )
+
+set(tinyobj_sources
+    src/tinyobj/tiny_obj_loader.cc
+    )
+
 list(SORT headers)
 list(SORT sources)
 list(SORT imgui_headers)
 list(SORT imgui_sources)
+list(SORT tinyobj_headers)
+list(SORT tinyobj_sources)
 
 source_group("Headers" FILES ${headers})
 source_group("Sources" FILES ${sources})
 source_group("ImGui\\Headers" FILES ${imgui_headers})
 source_group("ImGui\\Sources" FILES ${imgui_sources})
+source_group("TinyObj\\Headers" FILES ${tinyobj_headers})
+source_group("TinyObj\\Sources" FILES ${tinyobj_sources})
 
 #add_subdirectory(src/ImGui)
 #add_subdirectory(stream_compaction)  # TODO: uncomment if using your stream compaction
 
-add_executable(${CMAKE_PROJECT_NAME} ${sources} ${headers} ${imgui_sources} ${imgui_headers})
+add_executable(${CMAKE_PROJECT_NAME} ${sources} ${headers} ${imgui_sources} ${imgui_headers} ${tinyobj_header} ${tinyobj_sources})
 set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
 if(CMAKE_VERSION VERSION_LESS "3.23.0")
     set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES CUDA_ARCHITECTURES OFF)
@@ -123,8 +149,36 @@ endif()
 target_link_libraries(${CMAKE_PROJECT_NAME}
     ${LIBRARIES}
     cudadevrt
+    "${CMAKE_SOURCE_DIR}/external/lib/OpenImageDenoise.lib"
+    "${CMAKE_SOURCE_DIR}/external/lib/OpenImageDenoise_core.lib"
     #stream_compaction  # TODO: uncomment if using your stream compaction
     )
+
+# dll
+add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/external/bin/OpenImageDenoise.dll"
+        $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>
+	)
+
+add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD 
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/external/bin/OpenImageDenoise_core.dll"
+        $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>
+    )
+add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD 
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/external/bin/OpenImageDenoise_device_cpu.dll"
+        $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>
+    )
+add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD 
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/external/bin/OpenImageDenoise_device_cuda.dll"
+        $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>)
+
+
+    
+
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE "$<$<AND:$<CONFIG:Debug,RelWithDebInfo>,$<COMPILE_LANGUAGE:CUDA>>:-G;-src-in-ptx>")
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE "$<$<AND:$<CONFIG:Release>,$<COMPILE_LANGUAGE:CUDA>>:-lineinfo;-src-in-ptx>")
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${CMAKE_PROJECT_NAME})

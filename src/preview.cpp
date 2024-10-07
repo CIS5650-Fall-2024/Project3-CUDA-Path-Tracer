@@ -202,11 +202,13 @@ bool init()
 void InitImguiData(GuiDataContainer* guiData)
 {
     imguiData = guiData;
+    imguiData->focalDistance = 10.0f;  
+    imguiData->lensRadius = 0.05f;     
 }
 
 
 // LOOK: Un-Comment to check ImGui Usage
-void RenderImGui()
+void RenderImGui(bool camchanged)
 {
     mouseOverImGuiWinow = io->WantCaptureMouse;
 
@@ -227,13 +229,16 @@ void RenderImGui()
     //ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
     //ImGui::Checkbox("Another Window", &show_another_window);
 
-    //ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+    //ImGui::SliderFloat("Lens Radius of Camera", &imguiData->lensRadius, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
     //ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
 
     //if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
     //    counter++;
     //ImGui::SameLine();
     //ImGui::Text("counter = %d", counter);
+    bool focalDistanceChanged = ImGui::SliderFloat("Lens Radius of Camera", &imguiData->lensRadius, 0.0f, 1.0f);
+    bool lensRadiusChanged = ImGui::SliderFloat("Focal Distance of Camera", &imguiData->focalDistance, 0.0f, 20.0f);
+	camchanged = focalDistanceChanged || lensRadiusChanged;
     ImGui::Text("Traced Depth %d", imguiData->TracedDepth);
     ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
     ImGui::End();
@@ -249,11 +254,12 @@ bool MouseOverImGuiWindow()
     return mouseOverImGuiWinow;
 }
 
-void mainLoop()
+void mainLoop(bool camchanged)
 {
     while (!glfwWindowShouldClose(window))
     {
         glfwPollEvents();
+
 
         runCuda();
 
@@ -271,7 +277,7 @@ void mainLoop()
         glDrawElements(GL_TRIANGLES, 6,  GL_UNSIGNED_SHORT, 0);
 
         // Render ImGui Stuff
-        RenderImGui();
+        RenderImGui(camchanged);
 
         glfwSwapBuffers(window);
     }

@@ -1,0 +1,124 @@
+{
+    "Materials":
+    {
+        "starlight":
+        {
+            "TYPE":"Emitting",
+            "RGB":[0.929, 0.455, 0.094],
+            "EMITTANCE":3.0
+        },
+        "light":
+        {
+            "TYPE":"Emitting",
+            "RGB":[1.0, 1.0, 1.0],
+            "EMITTANCE":2.0
+        },
+        "diffuse_white":
+        {
+            "TYPE":"Diffuse",
+            "RGB":[0.98, 0.98, 0.98]
+        },
+        "refractive":
+        {
+            "TYPE":"Refractive",
+            "RGB":[0.5, 0.5, 0.5],
+            "IOR":2.5
+        },
+        "specular_white":
+        {
+            "TYPE":"Specular",
+            "RGB":[0.98, 0.98, 0.98],
+            "SPECULAR_COLOR":[1.0,1.0,1.0],
+            "ROUGHNESS":0.0
+        }
+    },
+    "Skybox":
+    {
+        "SKYBOX_TEXTURE":"skyboxes/small_apartment_1.hdr"
+        
+    },
+
+    "Camera":
+    {
+        "RES":[1024,768],
+        "FOVY":45.0,
+        "ITERATIONS":1,
+        "DEPTH":15,
+        "FILE":"switch",
+        "EYE":[-1.232,1.192,4.228],
+        "LOOKAT":[0.0,1.25,0.0],
+        "UP":[0.0,1.0,0.0]
+    },
+    "Objects":
+    [
+        {
+            "TYPE":"mesh",
+            "FILE":"objs/switch_2.obj",
+            "TRANS":[0.55,1.10,1.55],
+            "ROTAT":[0.0,22.0,0.0],
+            "SCALE":[1.8,1.8,1.8]
+        },
+        {
+            "TYPE":"cube",
+            "MATERIAL":"diffuse_white",
+            "TRANS":[0.0,0.2,0.0],
+            "ROTAT":[0.0,0.0,0.0],
+            "SCALE":[20.0,0.01,20.0]
+
+        },
+        {
+            "TYPE":"cube",
+            "MATERIAL":"specular_white",
+            "TRANS":[-2.3,0.0,0.0],
+            "ROTAT":[0.0,10.0,0.0],
+            "SCALE":[0.01,5.0,20.0]
+
+        },
+        {
+            "TYPE":"cube",
+            "MATERIAL":"light",
+            "TRANS":[1.232,1.192,4.628],
+            "ROTAT":[0.0,120.0,0.0],
+            "SCALE":[0.01,3.0,3.0]
+
+        },
+        {
+            "TYPE":"cube",
+            "MATERIAL":"light",
+            "TRANS":[1.232,2.5,4.628],
+            "ROTAT":[0.0,120.0,45.0],
+            "SCALE":[3.0,0.01,3.0]
+
+        },
+        {
+            "TYPE":"mesh",
+            "FILE":"objs/link.obj",
+            "TRANS":[1.0,1.1,3.95],
+            "ROTAT":[0.0,180.0,0.0],
+            "SCALE":[0.75,0.75,0.75]
+        },
+        {
+            "TYPE":"mesh",
+            "FILE":"objs/stars.obj",
+            "MATERIAL":"starlight",
+            "TRANS":[0.55,1.20,1.85],
+            "ROTAT":[0.0,22.0,0.0],
+            "SCALE":[1.0,1.0,1.0]
+        },
+        {
+            "TYPE":"mesh",
+            "FILE":"objs/card.obj",
+            "TRANS":[1.85,1.0,2.0],
+            "ROTAT":[-22.0,30.0,0.0],
+            "SCALE":[1.0,1.0,1.0]
+        },
+        {
+            "TYPE":"mesh",
+            "FILE":"objs/korok.obj",
+            "TRANS":[-1.1,0.6,1.6],
+            "ROTAT":[0.0,0.0,22.0],
+            "SCALE":[3.0,3.0,3.0]
+        }
+
+    ]
+}

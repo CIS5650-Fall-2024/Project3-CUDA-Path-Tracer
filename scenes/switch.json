@@ -1,0 +1,43 @@
+{
+    "Materials":
+    {
+        "light":
+        {
+            "TYPE":"Emitting",
+            "RGB":[1.0, 1.0, 1.0],
+            "EMITTANCE":2.0
+        },
+        "diffuse_white":
+        {
+            "TYPE":"Diffuse",
+            "RGB":[0.98, 0.98, 0.98]
+        }
+    },
+    "Skybox":
+    {
+        "SKYBOX_TEXTURE":"skyboxes/small_apartment_1.hdr"
+        
+    },
+    "Camera":
+    {
+        "RES":[1000,1000],
+        "FOVY":45.0,
+        "ITERATIONS":1000,
+        "DEPTH":8,
+        "FILE":"switch",
+        "EYE":[0.0,5.0,15.0],
+        "LOOKAT":[0.0,5.0,0.0],
+        "UP":[0.0,1.0,0.0]
+    },
+    "Objects":
+    [
+        {
+            "TYPE":"mesh",
+            "FILE":"objs/link.obj",
+            "MATERIAL":"diffuse_white",
+            "TRANS":[1.0,2.0,10.0],
+            "ROTAT":[0.0,0.0,0.0],
+            "SCALE":[2.0, 2.0, 2.0]
+        }
+    ]
+}

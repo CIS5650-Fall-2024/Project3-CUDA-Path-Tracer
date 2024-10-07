@@ -80,7 +80,7 @@ int main(int argc, char** argv)
     InitDataContainer(guiData);
 
     // GLFW main loop
-    mainLoop();
+    mainLoop(camchanged);
 
     return 0;
 }

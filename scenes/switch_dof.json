@@ -1,0 +1,117 @@
+{
+    "Materials":
+    {
+        "light":
+        {
+            "TYPE":"Emitting",
+            "RGB":[1.0, 1.0, 1.0],
+            "EMITTANCE":2.0
+        },
+        "diffuse_white":
+        {
+            "TYPE":"Diffuse",
+            "RGB":[0.98, 0.98, 0.98]
+        },
+        "diffuse_grey":
+        {
+            "TYPE":"Diffuse",
+            "RGB":[0.5, 0.5, 0.5]
+        },
+        "refractive":
+        {
+            "TYPE":"Refractive",
+            "RGB":[0.5, 0.5, 0.5],
+            "IOR":2.5
+        },
+        "specular_white":
+        {
+            "TYPE":"Specular",
+            "RGB":[0.98, 0.98, 0.98],
+            "SPECULAR_COLOR":[1.0,1.0,1.0],
+            "ROUGHNESS":0.0
+        }
+    },
+    "Camera":
+    {
+        "RES":[1024,768],
+        "FOVY":45.0,
+        "ITERATIONS":1000,
+        "DEPTH":8,
+        "FILE":"switch",
+        "EYE":[-1.232,1.192,4.228],
+        "LOOKAT":[0.0,1.25,0.0],
+        "UP":[0.0,1.0,0.0]
+    },
+    "Objects":
+    [
+        {
+            "TYPE":"mesh",
+            "FILE":"objs/cube_text2.obj",
+            "TRANS":[0.55,1.10,1.55],
+            "ROTAT":[0.0,22.0,0.0],
+            "SCALE":[1.0,1.0,1.0]
+        },
+        {
+            "TYPE":"cube",
+            "MATERIAL":"diffuse_white",
+            "TRANS":[0.0,0.2,0.0],
+            "ROTAT":[0.0,0.0,0.0],
+            "SCALE":[20.0,0.01,20.0]
+
+        },
+        {
+            "TYPE":"cube",
+            "MATERIAL":"light",
+            "TRANS":[1.232,1.192,4.628],
+            "ROTAT":[0.0,120.0,0.0],
+            "SCALE":[0.01,3.0,3.0]
+
+        },
+        {
+            "TYPE":"cube",
+            "MATERIAL":"light",
+            "TRANS":[1.232,2.5,4.628],
+            "ROTAT":[0.0,120.0,45.0],
+            "SCALE":[3.0,0.01,3.0]
+
+        },
+        {
+            "TYPE":"cube",
+            "MATERIAL":"specular_white",
+            "TRANS":[-2.3,0.0,0.0],
+            "ROTAT":[0.0,10.0,0.0],
+            "SCALE":[0.01,5.0,20.0]
+
+        },
+        {
+            "TYPE":"mesh",
+            "FILE":"objs/cube_text2.obj",
+            "TRANS":[0.55,1.10,3.55],
+            "ROTAT":[0.0,-22.0,0.0],
+            "SCALE":[0.132,0.402,0.402]
+        },
+        {
+            "TYPE":"mesh",
+            "FILE":"objs/stars.obj",
+            "MATERIAL":"light",
+            "TRANS":[0.55,1.20,1.85],
+            "ROTAT":[0.0,22.0,0.0],
+            "SCALE":[1.0,1.0,1.0]
+        },
+        {
+            "TYPE":"mesh",
+            "FILE":"objs/card.obj",
+            "TRANS":[1.75,1.0,2.0],
+            "ROTAT":[-22.0,30.0,0.0],
+            "SCALE":[1.0,1.0,1.0]
+        },
+        {
+            "TYPE":"mesh",
+            "FILE":"objs/korok.obj",
+            "TRANS":[-1.4,0.3,1.6],
+            "ROTAT":[0.0,0.0,22.0],
+            "SCALE":[3.0,3.0,3.0]
+        }
+
+    ]
+}

@@ -41,5 +41,14 @@ __host__ __device__ void scatterRay(
     PathSegment& pathSegment,
     glm::vec3 intersect,
     glm::vec3 normal,
+    glm::vec3 tangent,
+	glm::vec3 bitangent,
+    glm::vec2 uv,
+    //glm::mat3 TBN,
     const Material& m,
     thrust::default_random_engine& rng);
+
+__host__ __device__ void getEnvironmentMapColor(
+	PathSegment& pathSegment,
+	const Texture& t,
+	thrust::default_random_engine& rng);
