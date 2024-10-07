@@ -103,7 +103,7 @@ void saveImage()
 
     std::string filename = renderState->imageName;
     std::ostringstream ss;
-    ss << filename << "." << startTimeString << "." << samples << "samp";
+    ss << "../img/" << filename << "." << startTimeString << "." << samples << "samp";
     filename = ss.str();
 
     // CHECKITOUT
@@ -139,7 +139,7 @@ void runCuda()
 
     if (iteration == 0)
     {
-        pathtraceFree();
+        pathtraceFree(scene);
         pathtraceInit(scene);
     }
 
@@ -159,7 +159,64 @@ void runCuda()
     else
     {
         saveImage();
-        pathtraceFree();
+        cudaError_t err;
+
+        for (Material& material : scene->materials)
+        {
+
+            if (material.albedoMapTex.texObj != 0)
+            {
+                err = cudaDestroyTextureObject(material.albedoMapTex.texObj);
+                if (err != cudaSuccess) {
+                    std::cerr << "Error destroying albedoMap.texObj: " << cudaGetErrorString(err) << std::endl;
+                }
+                material.albedoMapTex.texObj = 0;
+            }
+            if (material.albedoMapTex.cuArray != nullptr)
+            {
+                err = cudaFreeArray(material.albedoMapTex.cuArray);
+                if (err != cudaSuccess) {
+                    std::cerr << "Error freeing albedoMap.cuArray: " << cudaGetErrorString(err) << std::endl;
+                }
+                material.albedoMapTex.cuArray = nullptr;
+            }
+
+
+            if (material.normalMapTex.texObj != 0)
+            {
+                err = cudaDestroyTextureObject(material.normalMapTex.texObj);
+                if (err != cudaSuccess) {
+                    std::cerr << "Error destroying normalMap.texObj: " << cudaGetErrorString(err) << std::endl;
+                }
+                material.normalMapTex.texObj = 0;
+            }
+            if (material.normalMapTex.cuArray != nullptr)
+            {
+                err = cudaFreeArray(material.normalMapTex.cuArray);
+                if (err != cudaSuccess) {
+                    std::cerr << "Error freeing normalMap.cuArray: " << cudaGetErrorString(err) << std::endl;
+                }
+                material.normalMapTex.cuArray = nullptr;
+            }
+
+            if (material.envMap.texObj != 0)
+            {
+                err = cudaDestroyTextureObject(material.envMap.texObj);
+                if (err != cudaSuccess) {
+                    std::cerr << "Error destroying envMap.texObj: " << cudaGetErrorString(err) << std::endl;
+                }
+                material.envMap.texObj = 0;
+            }
+            if (material.envMap.cuArray != nullptr)
+            {
+                err = cudaFreeArray(material.envMap.cuArray);
+                if (err != cudaSuccess) {
+                    std::cerr << "Error freeing envMap.cuArray: " << cudaGetErrorString(err) << std::endl;
+                }
+                material.envMap.cuArray = nullptr;
+            }
+        }
+        pathtraceFree(scene);
         cudaDeviceReset();
         exit(EXIT_SUCCESS);
     }

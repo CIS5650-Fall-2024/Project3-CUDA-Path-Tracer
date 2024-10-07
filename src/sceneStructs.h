@@ -7,10 +7,26 @@
 
 #define BACKGROUND_COLOR (glm::vec3(0.0f))
 
+struct AABB {
+    glm::vec3 AABBmin;
+    glm::vec3 AABBmax;
+};
+
+struct BVHNode {
+    
+    AABB bound;
+    int left;
+    int right;
+    int start;
+    int end;
+    bool isLeaf;
+};
+
 enum GeomType
 {
     SPHERE,
-    CUBE
+    CUBE,
+    MESH
 };
 
 struct Ray
@@ -18,7 +34,14 @@ struct Ray
     glm::vec3 origin;
     glm::vec3 direction;
 };
+struct Triangle {
+    glm::vec3 v0, v1, v2;
+    glm::vec3 normal;
 
+    glm::vec2 uv0;
+    glm::vec2 uv1;
+    glm::vec2 uv2;
+};
 struct Geom
 {
     enum GeomType type;
@@ -29,7 +52,34 @@ struct Geom
     glm::mat4 transform;
     glm::mat4 inverseTransform;
     glm::mat4 invTranspose;
+
+    BVHNode* bvhNodes;
+    int numBVHNodes;
+    Triangle* triangles;
+    int numTriangles;
 };
+
+struct TextureData {
+    int width;
+    int height;
+    int channels;
+    unsigned char* h_data; // Host data
+};
+
+struct EnvData_hdr {
+    int width;
+    int height;
+    int channels;
+    float* h_data; // Host data
+     
+};
+
+
+struct Texture {
+    cudaTextureObject_t texObj;
+    cudaArray_t cuArray;
+};
+
 
 struct Material
 {
@@ -43,6 +93,25 @@ struct Material
     float hasRefractive;
     float indexOfRefraction;
     float emittance;
+    float roughness;
+
+    //Host Side
+    TextureData albedoMapData;
+    TextureData normalMapData;
+    EnvData_hdr envMapData;
+
+    // Device-side CUDA texture objects
+    Texture albedoMapTex;
+    Texture normalMapTex;
+
+    Texture envMap;
+    bool isEnvironment;
+    float env_intensity;
+    
+
+    
+
+   
 };
 
 struct Camera
@@ -55,6 +124,8 @@ struct Camera
     glm::vec3 right;
     glm::vec2 fov;
     glm::vec2 pixelLength;
+    float aperture;
+    float focalDistance;
 };
 
 struct RenderState
@@ -82,4 +153,6 @@ struct ShadeableIntersection
   float t;
   glm::vec3 surfaceNormal;
   int materialId;
+
+  glm::vec2 uv;
 };

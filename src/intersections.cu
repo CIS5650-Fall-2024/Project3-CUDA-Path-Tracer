@@ -104,10 +104,203 @@ __host__ __device__ float sphereIntersectionTest(
 
     intersectionPoint = multiplyMV(sphere.transform, glm::vec4(objspaceIntersection, 1.f));
     normal = glm::normalize(multiplyMV(sphere.invTranspose, glm::vec4(objspaceIntersection, 0.f)));
-    if (!outside)
-    {
-        normal = -normal;
+    
+    return glm::length(r.origin - intersectionPoint);
+}
+__host__ __device__ bool rayIntersectsAABB(const Ray& ray, const AABB& box) {
+    
+    //const float EPSILON = 0.00001f;
+    float tmin = (box.AABBmin.x - ray.origin.x) / (fabs(ray.direction.x) > 0.00001f ? ray.direction.x : 0.00001f);
+    float tmax = (box.AABBmax.x - ray.origin.x) / (fabs(ray.direction.x) > 0.00001f ? ray.direction.x : 0.00001f);
+
+    if (tmin > tmax) {
+        float temp = tmin;
+        tmin = tmax;
+        tmax = temp;
+    } 
+
+    float tymin = (box.AABBmin.y - ray.origin.y) / (fabs(ray.direction.y) > 0.00001f ? ray.direction.y : 0.00001f);
+    float tymax = (box.AABBmax.y - ray.origin.y) / (fabs(ray.direction.y) > 0.00001f ? ray.direction.y : 0.00001f);
+
+   
+    if (tymin > tymax) {
+        float temp = tymin;
+        tymin = tymax;
+        tymax = temp;
     }
 
-    return glm::length(r.origin - intersectionPoint);
+    if ((tmin > tymax) || (tymin > tmax))
+        return false;
+
+    if (tymin > tmin)
+        tmin = tymin;
+
+    if (tymax < tmax)
+        tmax = tymax;
+
+    float tzmin = (box.AABBmin.z - ray.origin.z) / (fabs(ray.direction.z) > 0.00001f ? ray.direction.z : 0.00001f);
+    float tzmax = (box.AABBmax.z - ray.origin.z) / (fabs(ray.direction.z) > 0.00001f ? ray.direction.z : 0.00001f);
+
+    if (tzmin > tzmax) {
+        float temp = tzmin;
+        tzmin = tzmax;
+        tzmax = temp;
+    }
+
+
+    if ((tmin > tzmax) || (tzmin > tmax))
+        return false;
+
+    return true;
+
+
+
+}
+__host__ __device__ float meshIntersectionTest_BVH(
+    Geom geom,
+    Ray r,
+    glm::vec3& intersectionPoint,
+    glm::vec3& normal,
+    glm::vec2& uv,
+    bool& outside) 
+{
+    Ray q;
+    q.origin = multiplyMV(geom.inverseTransform, glm::vec4(r.origin, 1.0f));
+    q.direction = glm::normalize(multiplyMV(geom.inverseTransform, glm::vec4(r.direction, 0.0f)));
+
+    float t_min = FLT_MAX;
+    bool hit = false;
+    glm::vec3 tempIntersectionPoint;
+    glm::vec3 tempNormal;
+    glm::vec2 tempUV;
+
+
+    int stack[64];
+    int stackPtr = 0;
+    //the last nodes is root, buildBVH is post order
+    stack[stackPtr++] = geom.numBVHNodes - 1;
+
+    while (stackPtr > 0)
+    {
+        int nodeIdx = stack[--stackPtr];
+        BVHNode node = geom.bvhNodes[nodeIdx];
+
+        
+        if (rayIntersectsAABB(q, node.bound))
+        {
+            if (node.isLeaf)
+            {
+                for (int j = node.start; j < node.end; ++j)
+                {
+                    Triangle tri = geom.triangles[j];
+                    glm::vec3 baryPosition;
+                    bool intersects = glm::intersectRayTriangle(
+                        q.origin,
+                        q.direction,
+                        tri.v0,
+                        tri.v1,
+                        tri.v2,
+                        baryPosition);
+
+
+                    if (intersects)
+                    {
+                        float t = baryPosition.z;
+                        if (t > 0.0f && t < t_min)
+                        {
+                            t_min = t;
+                            hit = true;
+                            tempIntersectionPoint = q.origin + t * q.direction;
+                            tempNormal = tri.normal;
+
+                            tempUV = (1.0f - baryPosition.x - baryPosition.y) * tri.uv0 +
+                                baryPosition.x * tri.uv1 +
+                                baryPosition.y * tri.uv2;
+                        }
+                    }
+
+                
+                }
+            }
+            else
+            {
+                stack[stackPtr++] = node.left;
+                stack[stackPtr++] = node.right;
+            }
+        }
+
+
+
+    }
+    if (hit)
+    {
+        //Transform intersection point and normal back to world space
+        intersectionPoint = multiplyMV(geom.transform, glm::vec4(tempIntersectionPoint, 1.0f));
+        normal = glm::normalize(multiplyMV(geom.invTranspose, glm::vec4(tempNormal, 0.0f)));
+        uv = tempUV;
+        outside = glm::dot(r.direction, normal) < 0.0f;
+        return glm::length(r.origin - intersectionPoint);
+    }
+
+    return -1;
+
+
+    
+}
+
+__host__ __device__ float meshIntersectionTest(
+    Geom mesh,
+    Ray r,
+    glm::vec3& intersectionPoint,
+    glm::vec3& normal,
+    glm::vec2& uv,
+    bool& outside)
+{
+    Ray q;
+    q.origin = multiplyMV(mesh.inverseTransform, glm::vec4(r.origin, 1.0f));
+    q.direction = glm::normalize(multiplyMV(mesh.inverseTransform, glm::vec4(r.direction, 0.0f)));
+    float t_min = FLT_MAX;
+    bool hit = false;
+    glm::vec3 tempIntersectionPoint;
+    glm::vec3 tempNormal;
+    glm::vec2 tempUV;
+
+    for (int i = 0; i < mesh.numTriangles; ++i)
+    {
+        const Triangle& tri = mesh.triangles[i];
+
+        glm::vec3 baryPosition;
+
+        bool intersects = glm::intersectRayTriangle(
+            q.origin,
+            q.direction,
+            tri.v0,
+            tri.v1,
+            tri.v2,
+            baryPosition);
+        if (intersects) {
+            float t = baryPosition.z;
+            if (t > 0.0f && t < t_min)
+            {
+                t_min = t;
+                hit = true;
+                tempIntersectionPoint = q.origin + t * q.direction;
+                tempNormal = tri.normal;
+
+                tempUV = (1.0f - baryPosition.x - baryPosition.y) * tri.uv0 +
+                    baryPosition.x * tri.uv1 +
+                    baryPosition.y * tri.uv2;
+            }
+        }
+    }
+    if (hit)
+    {
+        // Transform intersection point and normal back to world space
+        intersectionPoint = multiplyMV(mesh.transform, glm::vec4(tempIntersectionPoint, 1.0f));
+        normal = glm::normalize(multiplyMV(mesh.invTranspose, glm::vec4(tempNormal, 0.0f)));
+        uv = tempUV;
+        outside = glm::dot(r.direction, normal) < 0.0f;
+        return glm::length(r.origin - intersectionPoint);
+    }
+    return -1;
 }

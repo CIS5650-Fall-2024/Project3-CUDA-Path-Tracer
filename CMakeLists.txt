@@ -50,6 +50,17 @@ set(GLM_ROOT_DIR "${CMAKE_SOURCE_DIR}/external")
 find_package(GLM REQUIRED)
 include_directories(${GLM_INCLUDE_DIRS})
 
+# Define OIDN root directory
+set(OIDN_ROOT "${CMAKE_SOURCE_DIR}/src/thirdparty/oidn-2.3.0.x64.windows")
+set(OpenImageDenoise_DIR "${OIDN_ROOT}/lib/cmake/OpenImageDenoise-2.3.0")
+
+find_package(OpenImageDenoise REQUIRED)
+if(NOT OpenImageDenoise_FOUND)
+    message(FATAL_ERROR "OpenImageDenoise not found. Please set OIDN_ROOT correctly.")
+endif()
+include_directories(${OpenImageDenoise_INCLUDE_DIRS})
+
+
 set(headers
     src/main.h
     src/image.h
@@ -61,6 +72,8 @@ set(headers
     src/sceneStructs.h
     src/preview.h
     src/utilities.h
+    src/thirdparty/tinyobj_loader/tiny_obj_loader.h
+    src/thirdparty/oidn-2.3.0.x64.windows/include/OpenImageDenoise/oidn.hpp
 )
 
 set(sources
@@ -123,8 +136,21 @@ endif()
 target_link_libraries(${CMAKE_PROJECT_NAME}
     ${LIBRARIES}
     cudadevrt
+    ${OpenImageDenoise_LIBRARIES}
+    "${OIDN_ROOT}/lib/OpenImageDenoise.lib"
+    "${OIDN_ROOT}/lib/OpenImageDenoise_core.lib"
+    #"${OIDN_ROOT}/lib/OpenImageDenoise_device_cuda.lib"
     #stream_compaction  # TODO: uncomment if using your stream compaction
     )
+
+add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${OIDN_ROOT}/bin/OpenImageDenoise.dll"
+        "${OIDN_ROOT}/bin/OpenImageDenoise_core.dll"
+        "${OIDN_ROOT}/bin/OpenImageDenoise_device_cuda.dll"
+        $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>
+)
+
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE "$<$<AND:$<CONFIG:Debug,RelWithDebInfo>,$<COMPILE_LANGUAGE:CUDA>>:-G;-src-in-ptx>")
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE "$<$<AND:$<CONFIG:Release>,$<COMPILE_LANGUAGE:CUDA>>:-lineinfo;-src-in-ptx>")
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${CMAKE_PROJECT_NAME})
