@@ -141,6 +141,7 @@ void runCuda()
     {
         pathtraceFree();
         pathtraceInit(scene);
+        
     }
 
     if (iteration < renderState->iterations)

@@ -43,7 +43,16 @@ struct Material
     float hasRefractive;
     float indexOfRefraction;
     float emittance;
+    float roughness;
 };
+
+
+struct Light
+{
+    int geom_id;
+    float intensity;
+};
+
 
 struct Camera
 {
@@ -55,6 +64,10 @@ struct Camera
     glm::vec3 right;
     glm::vec2 fov;
     glm::vec2 pixelLength;
+    glm::vec3 defocus_disk_up;       // Defocus disk vertical radius
+    glm::vec3 defocus_disk_right;       // Defocus disk horizontal radius
+    double defocus_angle = 0;  // Variation angle of rays through each pixel
+    double focus_dist = 3.4;    // Distance from camera lookfrom point to plane of perfect focus
 };
 
 struct RenderState
@@ -70,8 +83,17 @@ struct PathSegment
 {
     Ray ray;
     glm::vec3 color;
+    glm::vec3 directColor;
+    glm::vec3 indirectColor;
     int pixelIndex;
     int remainingBounces;
+    glm::vec3 throughput;
+    bool endPath;
+    int path_index;
+    float IOR;
+    
+
+    
 };
 
 // Use with a corresponding PathSegment to do:
@@ -79,7 +101,9 @@ struct PathSegment
 // 2) BSDF evaluation: generate a new ray
 struct ShadeableIntersection
 {
+    
   float t;
   glm::vec3 surfaceNormal;
+  glm::vec3 intersect_point;
   int materialId;
 };

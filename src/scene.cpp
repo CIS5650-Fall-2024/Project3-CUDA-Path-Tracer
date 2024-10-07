@@ -30,6 +30,7 @@ void Scene::loadFromJSON(const std::string& jsonName)
     json data = json::parse(f);
     const auto& materialsData = data["Materials"];
     std::unordered_map<std::string, uint32_t> MatNameToID;
+    
     for (const auto& item : materialsData.items())
     {
         const auto& name = item.key();
@@ -40,17 +41,33 @@ void Scene::loadFromJSON(const std::string& jsonName)
         {
             const auto& col = p["RGB"];
             newMaterial.color = glm::vec3(col[0], col[1], col[2]);
+           
         }
         else if (p["TYPE"] == "Emitting")
         {
             const auto& col = p["RGB"];
             newMaterial.color = glm::vec3(col[0], col[1], col[2]);
             newMaterial.emittance = p["EMITTANCE"];
+            
         }
         else if (p["TYPE"] == "Specular")
         {
             const auto& col = p["RGB"];
             newMaterial.color = glm::vec3(col[0], col[1], col[2]);
+            newMaterial.hasReflective = p["REFLECTIVE"];
+            newMaterial.roughness = p["ROUGHNESS"];      
+            newMaterial.specular.color = glm::vec3(col[0],col[1],col[2]);
+            
+        }
+        else if(p["TYPE"] == "Dielectric")
+        {
+            const auto& col = p["RGB"];
+            newMaterial.color = glm::vec3(col[0], col[1], col[2]);
+            newMaterial.hasReflective = p["REFLECTIVE"];
+            newMaterial.roughness = p["ROUGHNESS"];
+            newMaterial.indexOfRefraction = p["IOR"];   
+            newMaterial.hasRefractive = p["REFRACTIVE"];         
+            newMaterial.specular.color = glm::vec3(col[0],col[1],col[2]);
         }
         MatNameToID[name] = materials.size();
         materials.emplace_back(newMaterial);
@@ -58,6 +75,7 @@ void Scene::loadFromJSON(const std::string& jsonName)
     const auto& objectsData = data["Objects"];
     for (const auto& p : objectsData)
     {
+        Light newLight;
         const auto& type = p["TYPE"];
         Geom newGeom;
         if (type == "cube")
@@ -79,7 +97,12 @@ void Scene::loadFromJSON(const std::string& jsonName)
             newGeom.translation, newGeom.rotation, newGeom.scale);
         newGeom.inverseTransform = glm::inverse(newGeom.transform);
         newGeom.invTranspose = glm::inverseTranspose(newGeom.transform);
-
+        if(materials[newGeom.materialid].emittance > 0)
+        {
+            newLight.geom_id = geoms.size();
+            newLight.intensity = materials[newGeom.materialid].emittance;
+            lights.push_back(newLight);
+        }
         geoms.push_back(newGeom);
     }
     const auto& cameraData = data["Camera"];
@@ -96,6 +119,7 @@ void Scene::loadFromJSON(const std::string& jsonName)
     const auto& up = cameraData["UP"];
     camera.position = glm::vec3(pos[0], pos[1], pos[2]);
     camera.lookAt = glm::vec3(lookat[0], lookat[1], lookat[2]);
+    camera.view = glm::normalize(camera.lookAt - camera.position);
     camera.up = glm::vec3(up[0], up[1], up[2]);
 
     //calculate fov based on resolution
@@ -108,10 +132,14 @@ void Scene::loadFromJSON(const std::string& jsonName)
     camera.pixelLength = glm::vec2(2 * xscaled / (float)camera.resolution.x,
         2 * yscaled / (float)camera.resolution.y);
 
-    camera.view = glm::normalize(camera.lookAt - camera.position);
 
     //set up render camera stuff
     int arraylen = camera.resolution.x * camera.resolution.y;
     state.image.resize(arraylen);
     std::fill(state.image.begin(), state.image.end(), glm::vec3());
+
+
+    float defocus_radius = camera.focus_dist * std::tan((camera.defocus_angle / 2)*PI/180.0);
+    camera.defocus_disk_up = camera.up * defocus_radius;
+    camera.defocus_disk_right = camera.right * defocus_radius;
 }

@@ -22,11 +22,28 @@
             "TYPE":"Diffuse",
             "RGB":[0.35, 0.85, 0.35]
         },
+        "specular_green":
+        {
+            "TYPE":"Specular",
+            "RGB":[0.35, 0.85, 0.35],
+            "ROUGHNESS":0.5,
+            "REFLECTIVE":0.5
+        },
         "specular_white":
         {
             "TYPE":"Specular",
             "RGB":[0.98, 0.98, 0.98],
-            "ROUGHNESS":0.0
+            "ROUGHNESS":0.5,
+            "REFLECTIVE":0.5
+        },
+        "dielectric_white":
+        {
+            "TYPE":"Dielectric",
+            "RGB":[0.98, 0.98, 0.98],
+            "ROUGHNESS":0.5,
+            "REFLECTIVE":0.1,
+            "REFRACTIVE":0.7,
+            "IOR":1.5
         }
     },
     "Camera":
@@ -86,7 +103,7 @@
         },
         {
             "TYPE":"sphere",
-            "MATERIAL":"specular_white",
+            "MATERIAL":"dielectric_white",
             "TRANS":[-1.0,4.0,-1.0],
             "ROTAT":[0.0,0.0,0.0],
             "SCALE":[3.0,3.0,3.0]
