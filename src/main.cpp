@@ -1,6 +1,7 @@
 #include "main.h"
 #include "preview.h"
 #include <cstring>
+#include <OpenImageDenoise/oidn.hpp>
 
 static std::string startTimeString;
 

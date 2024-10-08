@@ -40,14 +40,68 @@ __host__ __device__ glm::vec3 calculateRandomDirectionInHemisphere(
         + sin(around) * over * perpendicularDirection2;
 }
 
+__host__ __device__ float reflectance(float cosine, float refraction_index) {
+    // Use Schlick's approximation for reflectance.
+    float r0 = (1.0 - refraction_index) / (1.0 + refraction_index);
+    r0 = r0 * r0;
+    return r0 + (1.0 - r0) * glm::pow((1.0 - cosine), 5.0);
+}
+
 __host__ __device__ void scatterRay(
     PathSegment & pathSegment,
     glm::vec3 intersect,
     glm::vec3 normal,
+    glm::vec2 uv,
+    bool outside,
     const Material &m,
+    glm::vec3 materialColor,
     thrust::default_random_engine &rng)
 {
     // TODO: implement this.
     // A basic implementation of pure-diffuse shading will just call the
     // calculateRandomDirectionInHemisphere defined above.
+    thrust::uniform_real_distribution<float> u01(0, 1);
+
+    glm::vec3 newDirection;
+    glm::vec3 currDir = normalize(pathSegment.ray.direction);
+    glm::vec3 n = normalize(normal);
+
+    pathSegment.ray.origin = intersect + 0.01f * n;
+
+    if (m.hasReflective) {
+        glm::vec3 reflectedDir = glm::reflect(currDir, n);
+        // Perfect specular reflection
+        newDirection = reflectedDir;
+        pathSegment.color *= materialColor;
+    }
+    else if (m.hasRefractive) {
+        float rand_f = u01(rng);
+        
+        float cos_theta = glm::min(1.f, dot(-currDir, n));
+        float schlick_factor = reflectance(cos_theta, m.indexOfRefraction);
+        if (schlick_factor >= rand_f) {
+            newDirection = normalize(glm::reflect(currDir, n));
+            pathSegment.ray.origin = intersect + 0.01f * newDirection;
+            pathSegment.color *= materialColor;
+        }
+        else {
+            float eta = m.indexOfRefraction;
+
+            if (outside) {
+                eta = 1.0 / m.indexOfRefraction;
+            }
+            glm::vec3 refracted = glm::refract(currDir, n, eta);
+            newDirection = normalize(refracted);
+            pathSegment.ray.origin = intersect + 0.01f * newDirection;
+            pathSegment.color *= materialColor;
+        }
+        
+    }
+    else {
+        newDirection = calculateRandomDirectionInHemisphere(n, rng);
+        pathSegment.color *= materialColor;
+    }
+    pathSegment.ray.direction = normalize(newDirection);
+
+    pathSegment.remainingBounces--;
 }

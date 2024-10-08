@@ -9,6 +9,16 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+# Set paths for OIDN (relative to project root)
+set(OIDN_ROOT "${CMAKE_SOURCE_DIR}/external/lib/oidn")
+
+# Include OIDN header files
+include_directories(${OIDN_ROOT}/include)
+
+# Link OIDN libraries
+link_directories(${OIDN_ROOT}/lib)
+
+
 # Enable C++11 for host code
 set(CMAKE_CXX_STANDARD 11)
 if(NOT DEFINED CMAKE_CUDA_STANDARD)
@@ -123,8 +133,20 @@ endif()
 target_link_libraries(${CMAKE_PROJECT_NAME}
     ${LIBRARIES}
     cudadevrt
+    OpenImageDenoise  # Link to the OIDN library
     #stream_compaction  # TODO: uncomment if using your stream compaction
     )
+
+# Copy DLL to output directory (if using dynamic linking)
+add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${OIDN_ROOT}/bin/OpenImageDenoise.dll"
+        "${OIDN_ROOT}/bin/OpenImageDenoise_core.dll"
+        "${OIDN_ROOT}/bin/OpenImageDenoise_device_cpu.dll"
+        "${OIDN_ROOT}/bin/tbb12.dll"
+        $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>
+)
+
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE "$<$<AND:$<CONFIG:Debug,RelWithDebInfo>,$<COMPILE_LANGUAGE:CUDA>>:-G;-src-in-ptx>")
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE "$<$<AND:$<CONFIG:Release>,$<COMPILE_LANGUAGE:CUDA>>:-lineinfo;-src-in-ptx>")
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${CMAKE_PROJECT_NAME})

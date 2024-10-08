@@ -1,0 +1,8 @@
+newmtl lambert3SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd mifei_standardSurface1_BaseColor.png
+bump  -bm 1 mifei_standardSurface1_Normal.png
+Ni 1.55

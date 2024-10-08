@@ -10,7 +10,14 @@
 enum GeomType
 {
     SPHERE,
-    CUBE
+    CUBE,
+    CUSTOM
+};
+
+struct Vertex {
+    glm::vec3 pos;
+    glm::vec2 uv;
+    glm::vec3 normal;
 };
 
 struct Ray
@@ -23,12 +30,32 @@ struct Geom
 {
     enum GeomType type;
     int materialid;
+    // {start_idx, end_idx} in overall scene vertices
+    glm::vec2 vertex_indices;
+    // {startIdx_in_all_cmeshes, endIdx}
     glm::vec3 translation;
     glm::vec3 rotation;
     glm::vec3 scale;
     glm::mat4 transform;
     glm::mat4 inverseTransform;
     glm::mat4 invTranspose;
+};
+
+struct EnvTexture {
+    int isTextureValid;
+    glm::vec3 color;
+    int width;
+    int height;
+    int channel;
+    float brightness;
+    float* imgData;
+};
+
+struct Texture {
+    int width;
+    int height;
+    int channel;
+    unsigned char* imgData;
 };
 
 struct Material
@@ -43,6 +70,8 @@ struct Material
     float hasRefractive;
     float indexOfRefraction;
     float emittance;
+    int baseColorTextIdx;
+    int bumpMapTextIdx;
 };
 
 struct Camera
@@ -82,4 +111,6 @@ struct ShadeableIntersection
   float t;
   glm::vec3 surfaceNormal;
   int materialId;
+  glm::vec2 uv;
+  bool outside;
 };
