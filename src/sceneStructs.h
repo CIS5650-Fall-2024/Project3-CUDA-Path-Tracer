@@ -4,13 +4,21 @@
 #include <vector>
 #include <cuda_runtime.h>
 #include "glm/glm.hpp"
+#include "bvh.h"
 
 #define BACKGROUND_COLOR (glm::vec3(0.0f))
+
+
+
+struct Vertex;
+struct AABB;
+
 
 enum GeomType
 {
     SPHERE,
-    CUBE
+    CUBE,
+    OBJ
 };
 
 struct Ray
@@ -19,17 +27,7 @@ struct Ray
     glm::vec3 direction;
 };
 
-struct Geom
-{
-    enum GeomType type;
-    int materialid;
-    glm::vec3 translation;
-    glm::vec3 rotation;
-    glm::vec3 scale;
-    glm::mat4 transform;
-    glm::mat4 inverseTransform;
-    glm::mat4 invTranspose;
-};
+
 
 struct Material
 {
@@ -82,4 +80,40 @@ struct ShadeableIntersection
   float t;
   glm::vec3 surfaceNormal;
   int materialId;
+};
+
+
+
+
+struct Vertex {
+    glm::vec3 pos;
+    glm::vec3 nor;
+};
+
+
+
+
+struct Geom
+{
+    enum GeomType type;
+    int materialid;
+    glm::vec3 translation;
+    glm::vec3 rotation;
+    glm::vec3 scale;
+    glm::mat4 transform;
+    glm::mat4 inverseTransform;
+    glm::mat4 invTranspose;
+};
+
+
+
+struct Triangle
+{
+    glm::vec3 vertices[3];
+    glm::vec3 normals[3];
+    glm::vec2 uvs[3];
+
+    AABB aabb = AABB();
+
+    int idx_v0, idx_v1, idx_v2; // Indices of the vertices in the vertex array
 };

@@ -71,3 +71,35 @@ __host__ __device__ float sphereIntersectionTest(
     glm::vec3& intersectionPoint,
     glm::vec3& normal,
     bool& outside);
+
+
+
+
+
+
+
+__host__ __device__ bool triangleIntersectionTest(
+    const Triangle& tri,
+    const Vertex* dev_vertices,  // Use device pointer instead of vector
+    const Ray& r,
+    glm::vec3& intersectionPoint,
+    glm::vec3& normal,
+    float& t);
+
+
+
+
+__host__ __device__ float objMeshIntersectionTest(
+    const Geom& obj,
+    const Vertex* dev_vertices,  // Use device pointer
+    const Triangle* dev_triangles,  // Use device pointer
+    int numTriangles,
+    Ray r,
+    glm::vec3& intersectionPoint,
+    glm::vec3& normal,
+    bool& outside);
+
+
+
+
+__host__ __device__ bool intersectAABB(const Ray& r, const AABB& box);
