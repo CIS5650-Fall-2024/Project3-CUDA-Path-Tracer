@@ -1,5 +1,6 @@
 #include "main.h"
 #include "preview.h"
+#include "postprocess.h"
 #include <cstring>
 
 static std::string startTimeString;
@@ -97,7 +98,10 @@ void saveImage()
         {
             int index = x + (y * width);
             glm::vec3 pix = renderState->image[index];
-            img.setPixel(width - 1 - x, y, glm::vec3(pix) / samples);
+            pix /= samples;
+            pix = postprocess::ACESToneMapping(pix);
+            pix = postprocess::gammaCorrection(pix, /*gamma=*/2.2f);
+            img.setPixel(width - 1 - x, y, glm::vec3(pix));
         }
     }
 
@@ -151,7 +155,7 @@ void runCuda()
 
         // execute the kernel
         int frame = 0;
-        pathtrace(pbo_dptr, frame, iteration);
+        pathtrace(pbo_dptr, frame, iteration, doMaterialSorting);
 
         // unmap buffer object
         cudaGLUnmapBufferObject(pbo);

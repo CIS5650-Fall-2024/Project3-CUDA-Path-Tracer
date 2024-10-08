@@ -71,3 +71,30 @@ __host__ __device__ float sphereIntersectionTest(
     glm::vec3& intersectionPoint,
     glm::vec3& normal,
     bool& outside);
+
+__host__ __device__ float meshIntersectionTest(
+    Geom geom,
+    Ray ray,
+    glm::vec3* dev_meshes_positions,
+    uint16_t* dev_meshes_indices,
+    glm::vec3* dev_meshes_normals,
+    glm::vec2* dev_meshes_uvs,
+    glm::vec3 &intersectionPoint,
+    glm::vec3 &normal,
+    bool &outside
+);
+
+__host__ __device__ bool intersectBVH(
+    const BVHNode* bvhNodes,       // The BVH nodes (top-level BVH for meshes)
+    const Ray& ray,                // The ray to intersect
+    int nodeIdx,                   // Index of the current BVH node
+    const Geom* geoms,             // Array of all meshes in the scene
+    glm::vec3* dev_meshes_positions, // Mesh positions
+    uint16_t* dev_meshes_indices,  // Mesh indices
+    glm::vec3* dev_meshes_normals, // Mesh normals
+    int& hit_geom_index,           // Output: index of the hit geometry
+    glm::vec3& intersectionPoint,  // Output intersection point
+    glm::vec3& normal,             // Output normal at intersection
+    bool& outside,                 // Whether the intersection is on the outside of the mesh
+    float& t_min                   // Minimum intersection distance (output)
+);

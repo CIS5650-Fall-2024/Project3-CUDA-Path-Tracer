@@ -1,4 +1,5 @@
 #include "interactions.h"
+#include "bxdf.h"
 
 __host__ __device__ glm::vec3 calculateRandomDirectionInHemisphere(
     glm::vec3 normal,
@@ -41,13 +42,53 @@ __host__ __device__ glm::vec3 calculateRandomDirectionInHemisphere(
 }
 
 __host__ __device__ void scatterRay(
-    PathSegment & pathSegment,
+    PathSegment& pathSegment,
     glm::vec3 intersect,
     glm::vec3 normal,
-    const Material &m,
-    thrust::default_random_engine &rng)
-{
-    // TODO: implement this.
-    // A basic implementation of pure-diffuse shading will just call the
-    // calculateRandomDirectionInHemisphere defined above.
+    const Material& material,
+    thrust::default_random_engine& rng
+) {
+    if (material.type == SKIN)
+    {
+        glm::vec3 diffuseDir = calculateRandomDirectionInHemisphere(normal, rng);
+        glm::vec3 subsurfaceNormal = normal + material.subsurfaceScattering * calculateRandomDirectionInHemisphere(normal, rng);
+        glm::vec3 finalDirection = glm::normalize(glm::mix(diffuseDir, subsurfaceNormal, material.subsurfaceScattering));
+        pathSegment.ray.direction = finalDirection;
+        pathSegment.color *= material.color;
+        pathSegment.ray.origin = intersect + 0.1f * finalDirection;
+    }
+    else if (material.type == GGX)
+    {
+        glm::vec3 H = sampleGGXNormal(normal, material.roughness, rng);
+
+        glm::vec3 incomingRay = pathSegment.ray.direction;
+        glm::vec3 reflectedRay = glm::reflect(incomingRay, H);
+
+        glm::vec3 brdfValue = GGXBRDF(intersect, normal, incomingRay, reflectedRay, material);
+
+        pathSegment.ray.direction = reflectedRay;
+        pathSegment.color *= brdfValue;
+        pathSegment.ray.origin = intersect + 0.1f * reflectedRay;
+    }
+    else if (material.type == SPECULAR)
+    {
+    // if (material.hasReflective == 1.0f) {
+        SpecularBRDF(pathSegment, material, intersect, normal);
+    }
+    // else if (material.hasRefractive > 0.0f) {
+    else if (material.type == DIELECTRIC)
+    {
+        DielectricBxDF(pathSegment, material, intersect, normal, rng);
+    }
+    else if (material.type == LIGHT)
+    {
+        pathSegment.color *= (material.color * material.emittance);
+        pathSegment.remainingBounces = 0;
+    }
+    else  if (material.type == DIFFUSE)
+    {
+        pathSegment.ray.direction = calculateRandomDirectionInHemisphere(normal, rng);
+        pathSegment.color *= material.color;
+        pathSegment.ray.origin = intersect + 0.1f * normal;
+    }
 }

@@ -43,3 +43,11 @@ __host__ __device__ void scatterRay(
     glm::vec3 normal,
     const Material& m,
     thrust::default_random_engine& rng);
+
+__host__ __device__ void scatterRay(
+    PathSegment& pathSegment,
+    glm::vec3 intersect,
+    glm::vec3 normal,
+    const Material& material,
+    thrust::default_random_engine& rng,
+    bool outside);

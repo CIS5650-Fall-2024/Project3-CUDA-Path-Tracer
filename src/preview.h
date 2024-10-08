@@ -1,6 +1,7 @@
 #pragma once
 
 extern GLuint pbo;
+extern bool doMaterialSorting;
 
 std::string currentTimeString();
 bool init();
