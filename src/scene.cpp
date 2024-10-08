@@ -35,26 +35,59 @@ void Scene::loadFromJSON(const std::string& jsonName)
         const auto& name = item.key();
         const auto& p = item.value();
         Material newMaterial{};
-        // TODO: handle materials loading differently
+        const auto& col = p["RGB"];
+        newMaterial.color = glm::vec3(col[0], col[1], col[2]);
+
+        // Initialize default values
+        newMaterial.hasReflective = 0.0f;
+        newMaterial.hasRefractive = 0.0f;
+        newMaterial.metallic = 0.0f;
+        newMaterial.roughness = 0.5f;
+        newMaterial.plasticSpecular = 0.0f;
+        newMaterial.indexOfRefraction = 1.5f;
+
         if (p["TYPE"] == "Diffuse")
         {
-            const auto& col = p["RGB"];
-            newMaterial.color = glm::vec3(col[0], col[1], col[2]);
+            // Keep default values
         }
         else if (p["TYPE"] == "Emitting")
         {
-            const auto& col = p["RGB"];
-            newMaterial.color = glm::vec3(col[0], col[1], col[2]);
             newMaterial.emittance = p["EMITTANCE"];
         }
         else if (p["TYPE"] == "Specular")
         {
-            const auto& col = p["RGB"];
-            newMaterial.color = glm::vec3(col[0], col[1], col[2]);
+            newMaterial.hasReflective = 1.0f;
+            newMaterial.specular.color = newMaterial.color;
         }
+        else if (p["TYPE"] == "Dielectric")
+        {
+            newMaterial.hasRefractive = 1.0f;
+            newMaterial.indexOfRefraction = p["IOR"];
+        }
+        else if (p["TYPE"] == "Metallic")
+        {
+            newMaterial.metallic = p["METALLIC"];
+            newMaterial.hasReflective = newMaterial.metallic;
+            newMaterial.specular.color = glm::mix(glm::vec3(0.04f), newMaterial.color, newMaterial.metallic);
+        }
+        else if (p["TYPE"] == "Plastic")
+        {
+            newMaterial.plasticSpecular = p["SPECULAR"];
+            newMaterial.hasReflective = 1.0f; // Always have some reflection for plastics
+            newMaterial.indexOfRefraction = p["IOR"];
+        }
+
+        // Handle Roughness
+        if (p.contains("ROUGHNESS"))
+        {
+            newMaterial.roughness = p["ROUGHNESS"].get<float>();
+        }
+        newMaterial.specular.exponent = 1.0f - newMaterial.roughness;
+
         MatNameToID[name] = materials.size();
         materials.emplace_back(newMaterial);
     }
+
     const auto& objectsData = data["Objects"];
     for (const auto& p : objectsData)
     {
@@ -80,7 +113,9 @@ void Scene::loadFromJSON(const std::string& jsonName)
         newGeom.inverseTransform = glm::inverse(newGeom.transform);
         newGeom.invTranspose = glm::inverseTranspose(newGeom.transform);
 
+
         geoms.push_back(newGeom);
+
     }
     const auto& cameraData = data["Camera"];
     Camera& camera = state.camera;
@@ -114,4 +149,5 @@ void Scene::loadFromJSON(const std::string& jsonName)
     int arraylen = camera.resolution.x * camera.resolution.y;
     state.image.resize(arraylen);
     std::fill(state.image.begin(), state.image.end(), glm::vec3());
+
 }

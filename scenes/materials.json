@@ -1,0 +1,142 @@
+{
+    "Materials": {
+        "white_light": {
+            "TYPE": "Emitting",
+            "RGB": [1.0, 1.0, 1.0],
+            "EMITTANCE": 50.0
+        },
+        "red_light": {
+            "TYPE": "Emitting",
+            "RGB": [1.0, 0.2, 0.2],
+            "EMITTANCE": 50.0
+        },
+        "blue_light": {
+            "TYPE": "Emitting",
+            "RGB": [0.2, 0.2, 1.0],
+            "EMITTANCE": 50.0
+        },
+        "floor": {
+            "TYPE": "Diffuse",
+            "RGB": [0.9, 0.9, 0.9]
+        },
+        "metallic_gold": {
+            "TYPE": "Metallic",
+            "RGB": [1.0, 0.86, 0.57],
+            "METALLIC": 1.0,
+            "ROUGHNESS": 0.1
+        },
+        "brushed_aluminum": {
+            "TYPE": "Metallic",
+            "RGB": [0.91, 0.92, 0.92],
+            "METALLIC": 0.8,
+            "ROUGHNESS": 0.4
+        },
+        "shiny_plastic_teal": {
+            "TYPE": "Plastic",
+            "RGB": [0.0, 0.5, 0.5],
+            "ROUGHNESS": 0.05,
+            "SPECULAR": 0.8,
+            "IOR": 1.5
+        },
+        "matte_plastic_purple": {
+            "TYPE": "Plastic",
+            "RGB": [0.5, 0.0, 0.5],
+            "ROUGHNESS": 0.8,
+            "SPECULAR": 0.1,
+            "IOR": 1.45
+        },
+        "glass": {
+            "TYPE": "Dielectric",
+            "RGB": [0.95, 0.95, 1.0],
+            "IOR": 1.52,
+            "ROUGHNESS": 0.01
+        },
+        "mirror": {
+            "TYPE": "Specular",
+            "RGB": [0.99, 0.99, 0.99],
+            "ROUGHNESS": 0.001
+        }
+    },
+    "Camera": {
+        "RES": [800,800],
+        "FOVY": 50.0,
+        "ITERATIONS": 5000,
+        "DEPTH": 8,
+        "FILE": "materials_showcase",
+        "EYE": [0.0, 10.0, 5.0],
+        "LOOKAT": [0.0, 3.0, 0.0],
+        "UP": [0.0, 1.0, 0.0]
+    },
+    "Objects": [
+        {
+            "TYPE": "cube",
+            "MATERIAL": "floor",
+            "TRANS": [0.0, -0.5, 0.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [20.0, 1.0, 20.0]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "white_light",
+            "TRANS": [0.0, 10.0, 0.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.0, 1.0, 1.0]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "red_light",
+            "TRANS": [-5.0, 5.0, -5.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [0.5, 0.5, 0.5]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "blue_light",
+            "TRANS": [5.0, 5.0, -5.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [0.5, 0.5, 0.5]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "metallic_gold",
+            "TRANS": [-4.0, 2.0, 0.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [2.0, 2.0, 2.0]
+        },
+        {
+            "TYPE": "cube",
+            "MATERIAL": "brushed_aluminum",
+            "TRANS": [0.0, 2.0, 0.0],
+            "ROTAT": [0.0, 45.0, 0.0],
+            "SCALE": [1.5, 1.5, 1.5]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "shiny_plastic_teal",
+            "TRANS": [4.0, 2.0, 0.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [2.0, 2.0, 2.0]
+        },
+        {
+            "TYPE": "cube",
+            "MATERIAL": "matte_plastic_purple",
+            "TRANS": [-2.0, 1.0, 3.0],
+            "ROTAT": [0.0, 30.0, 0.0],
+            "SCALE": [1.0, 1.0, 1.0]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "glass",
+            "TRANS": [2.0, 2.0, 3.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.5, 1.5, 1.5]
+        },
+        {
+            "TYPE": "cube",
+            "MATERIAL": "mirror",
+            "TRANS": [0.0, 2.0, -4.0],
+            "ROTAT": [0.0, -15.0, 0.0],
+            "SCALE": [4.0, 4.0, 0.1]
+        }
+    ]
+}

@@ -1,0 +1,64 @@
+{
+    "Materials": {
+        "white_light": {
+            "TYPE": "Emitting",
+            "RGB": [1.0, 1.0, 1.0],
+            "EMITTANCE": 10.0
+        },
+        "diffuse_white": {
+            "TYPE": "Diffuse",
+            "RGB": [0.98, 0.98, 0.98]
+        },
+        "metallic_gold": {
+            "TYPE": "Metallic",
+            "RGB": [1.0, 0.86, 0.57],
+            "METALLIC": 1.0,
+            "ROUGHNESS": 0.1
+        },
+        "mesh_material": {
+            "TYPE": "Diffuse",
+            "RGB": [0.7, 0.3, 0.3]
+        }
+    },
+    "Camera": {
+        "RES": [800, 600],
+        "FOVY": 45.0,
+        "ITERATIONS": 5000,
+        "DEPTH": 8,
+        "FILE": "mesh_scene",
+        "EYE": [0.0, 5.0, 15.0],
+        "LOOKAT": [0.0, 0.0, 0.0],
+        "UP": [0.0, 1.0, 0.0]
+    },
+    "Objects": [
+        {
+            "TYPE": "cube",
+            "MATERIAL": "white_light",
+            "TRANS": [0.0, 10.0, 0.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [5.0, 0.5, 5.0]
+        },
+        {
+            "TYPE": "cube",
+            "MATERIAL": "diffuse_white",
+            "TRANS": [0.0, -1.0, 0.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [20.0, 1.0, 20.0]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "metallic_gold",
+            "TRANS": [-3.0, 1.0, 0.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.0, 1.0, 1.0]
+        },
+        {
+            "TYPE": "mesh",
+            "MATERIAL": "mesh_material",
+            "FILE": "../scenes/cube.obj",
+            "TRANS": [3.0, 0.0, 0.0],
+            "ROTAT": [0.0, 45.0, 0.0],
+            "SCALE": [1.0, 1.0, 1.0]
+        }
+    ]
+}

@@ -1,0 +1,482 @@
+{
+    "Materials": {
+        "light_red": {
+            "TYPE": "Emitting",
+            "RGB": [1.0, 0.2, 0.2],
+            "EMITTANCE": 5.0
+        },
+        "light_green": {
+            "TYPE": "Emitting",
+            "RGB": [0.2, 1.0, 0.2],
+            "EMITTANCE": 5.0
+        },
+        "light_blue": {
+            "TYPE": "Emitting",
+            "RGB": [0.2, 0.2, 1.0],
+            "EMITTANCE": 5.0
+        },
+        "light_yellow": {
+            "TYPE": "Emitting",
+            "RGB": [1.0, 1.0, 0.2],
+            "EMITTANCE": 5.0
+        },
+        "light_cyan": {
+            "TYPE": "Emitting",
+            "RGB": [0.2, 1.0, 1.0],
+            "EMITTANCE": 5.0
+        },
+        "light_magenta": {
+            "TYPE": "Emitting",
+            "RGB": [1.0, 0.2, 1.0],
+            "EMITTANCE": 5.0
+        },
+        "wall": {
+            "TYPE": "Glass",
+            "RGB": [0.9, 0.9, 0.9]
+        },
+        "metallic_gold": {
+            "TYPE": "Metallic",
+            "RGB": [1.0, 0.86, 0.57],
+            "METALLIC": 1.0,
+            "ROUGHNESS": 0.1
+        },
+        "shiny_Specular_teal": {
+            "TYPE": "Specular",
+            "RGB": [0.0, 0.7, 0.7],
+            "ROUGHNESS": 0.05,
+            "SPECULAR": 0.8,
+            "IOR": 1.5
+        },
+        "matte_Specular_purple": {
+            "TYPE": "Specular",
+            "RGB": [0.7, 0.0, 0.7],
+            "ROUGHNESS": 0.8,
+            "SPECULAR": 0.1,
+            "IOR": 1.45
+        },
+        "glass": {
+            "TYPE": "Dielectric",
+            "RGB": [0.95, 0.95, 1.0],
+            "IOR": 1.52,
+            "ROUGHNESS": 0.01
+        },
+        "mirror": {
+            "TYPE": "Specular",
+            "RGB": [0.99, 0.99, 0.99],
+            "ROUGHNESS": 0.001
+        },
+        "Glass_white": {
+            "TYPE": "Glass",
+            "RGB": [0.9, 0.9, 0.9]
+        },
+        "Glass_red": {
+            "TYPE": "Glass",
+            "RGB": [0.9, 0.1, 0.1]
+        },
+        "Glass_green": {
+            "TYPE": "Glass",
+            "RGB": [0.1, 0.9, 0.1]
+        },
+        "Glass_blue": {
+            "TYPE": "Glass",
+            "RGB": [0.1, 0.1, 0.9]
+        }
+    },
+    "Camera": {
+        "RES": [800, 800],
+        "FOVY": 50.0,
+        "ITERATIONS": 5000,
+        "DEPTH": 8,
+        "FILE": "colorful_room",
+        "EYE": [0.0, 5.0, 10.0],
+        "LOOKAT": [0.0, 5.0, 0.0],
+        "UP": [0.0, 1.0, 0.0]
+    },
+    "Objects": [
+        {
+            "TYPE": "cube",
+            "MATERIAL": "light_red",
+            "TRANS": [-3.33, 0.0, -3.33],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [3.34, 0.1, 3.34]
+        },
+        {
+            "TYPE": "cube",
+            "MATERIAL": "light_green",
+            "TRANS": [0.0, 0.0, -3.33],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [3.33, 0.1, 3.34]
+        },
+        {
+            "TYPE": "cube",
+            "MATERIAL": "light_blue",
+            "TRANS": [3.33, 0.0, -3.33],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [3.34, 0.1, 3.34]
+        },
+        {
+            "TYPE": "cube",
+            "MATERIAL": "light_yellow",
+            "TRANS": [-3.33, 0.0, 0.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [3.34, 0.1, 3.33]
+        },
+        {
+            "TYPE": "cube",
+            "MATERIAL": "light_cyan",
+            "TRANS": [0.0, 0.0, 0.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [3.33, 0.1, 3.33]
+        },
+        {
+            "TYPE": "cube",
+            "MATERIAL": "light_magenta",
+            "TRANS": [3.33, 0.0, 0.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [3.34, 0.1, 3.33]
+        },
+        {
+            "TYPE": "cube",
+            "MATERIAL": "light_red",
+            "TRANS": [-3.33, 0.0, 3.33],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [3.34, 0.1, 3.34]
+        },
+        {
+            "TYPE": "cube",
+            "MATERIAL": "light_green",
+            "TRANS": [0.0, 0.0, 3.33],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [3.33, 0.1, 3.34]
+        },
+        {
+            "TYPE": "cube",
+            "MATERIAL": "light_blue",
+            "TRANS": [3.33, 0.0, 3.33],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [3.34, 0.1, 3.34]
+        },
+        {
+            "TYPE": "cube",
+            "MATERIAL": "light_red",
+            "TRANS": [-3.33, 10.0, -3.33],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [3.34, 0.1, 3.34]
+        },
+        {
+            "TYPE": "cube",
+            "MATERIAL": "light_green",
+            "TRANS": [0.0, 10.0, -3.33],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [3.33, 0.1, 3.34]
+        },
+        {
+            "TYPE": "cube",
+            "MATERIAL": "light_blue",
+            "TRANS": [3.33, 10.0, -3.33],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [3.34, 0.1, 3.34]
+        },
+        {
+            "TYPE": "cube",
+            "MATERIAL": "light_yellow",
+            "TRANS": [-3.33, 10.0, 0.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [3.34, 0.1, 3.33]
+        },
+        {
+            "TYPE": "cube",
+            "MATERIAL": "light_cyan",
+            "TRANS": [0.0, 10.0, 0.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [3.33, 0.1, 3.33]
+        },
+        {
+            "TYPE": "cube",
+            "MATERIAL": "light_magenta",
+            "TRANS": [3.33, 10.0, 0.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [3.34, 0.1, 3.33]
+        },
+        {
+            "TYPE": "cube",
+            "MATERIAL": "light_red",
+            "TRANS": [-3.33, 10.0, 3.33],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [3.34, 0.1, 3.34]
+        },
+        {
+            "TYPE": "cube",
+            "MATERIAL": "light_green",
+            "TRANS": [0.0, 10.0, 3.33],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [3.33, 0.1, 3.34]
+        },
+        {
+            "TYPE": "cube",
+            "MATERIAL": "light_blue",
+            "TRANS": [3.33, 10.0, 3.33],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [3.34, 0.1, 3.34]
+        },
+        {
+            "TYPE": "cube",
+            "MATERIAL": "wall",
+            "TRANS": [-5.0, 5.0, 0.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [0.1, 10.0, 10.0]
+        },
+        {
+            "TYPE": "cube",
+            "MATERIAL": "wall",
+            "TRANS": [5.0, 5.0, 0.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [0.1, 10.0, 10.0]
+        },
+        {
+            "TYPE": "cube",
+            "MATERIAL": "wall",
+            "TRANS": [0.0, 5.0, -5.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [10.0, 10.0, 0.1]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "metallic_gold",
+            "TRANS": [-4.0, 1.0, -4.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.0, 1.0, 1.0]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "shiny_Specular_teal",
+            "TRANS": [0.0, 1.0, -4.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.0, 1.0, 1.0]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "matte_Specular_purple",
+            "TRANS": [4.0, 1.0, -4.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.0, 1.0, 1.0]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "glass",
+            "TRANS": [-4.0, 1.0, 0.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.0, 1.0, 1.0]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "mirror",
+            "TRANS": [0.0, 1.0, 0.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.0, 1.0, 1.0]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "Glass_red",
+            "TRANS": [4.0, 1.0, 0.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.0, 1.0, 1.0]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "Glass_green",
+            "TRANS": [-4.0, 1.0, 4.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.0, 1.0, 1.0]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "Glass_blue",
+            "TRANS": [0.0, 1.0, 4.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.0, 1.0, 1.0]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "Glass_white",
+            "TRANS": [4.0, 1.0, 4.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.0, 1.0, 1.0]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "metallic_gold",
+            "TRANS": [-2.0, 3.0, -2.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.75, 1.75, 1.75]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "glass",
+            "TRANS": [2.0, 3.0, -2.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.75, 1.75, 1.75]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "shiny_Specular_teal",
+            "TRANS": [-2.0, 3.0, 2.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.75, 1.75, 1.75]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "matte_Specular_purple",
+            "TRANS": [2.0, 3.0, 2.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.75, 1.75, 1.75]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "mirror",
+            "TRANS": [0.0, 5.0, 0.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [0.5, 0.5, 0.5]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "Glass_red",
+            "TRANS": [-3.0, 5.0, -3.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [0.5, 0.5, 0.5]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "Glass_green",
+            "TRANS": [3.0, 5.0, -3.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [0.5, 0.5, 0.5]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "Glass_blue",
+            "TRANS": [0.0, 5.0, 3.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [0.5, 0.5, 0.5]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "metallic_gold",
+            "TRANS": [-1.0, 3.0, -3.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.9, 1.9, 1.9]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "shiny_Specular_teal",
+            "TRANS": [2.0, 9.0, 4.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.3, 1.3, 1.3]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "matte_Specular_purple",
+            "TRANS": [4.0, 1.0, -4.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.0, 1.0, 1.0]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "glass",
+            "TRANS": [-4.0, 1.0, 0.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.0, 1.0, 1.0]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "mirror",
+            "TRANS": [0.0, 1.0, 0.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.0, 1.0, 1.0]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "Glass_red",
+            "TRANS": [4.0, 8.5, 0.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.0, 1.0, 1.0]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "Glass_green",
+            "TRANS": [-4.0, 7.5, 4.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.0, 1.0, 1.0]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "Glass_blue",
+            "TRANS": [0.0, 5.5, 4.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.0, 1.0, 1.0]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "Glass_white",
+            "TRANS": [4.0, 6.0, 4.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.0, 1.0, 1.0]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "metallic_gold",
+            "TRANS": [-2.0, 9.0, -2.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.75, 1.75, 1.75]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "glass",
+            "TRANS": [-2.0, 7.0, -2.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.75, 1.75, 1.75]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "shiny_Specular_teal",
+            "TRANS": [-4.0, 1.0, -2.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [3.75, 3.75, 3.75]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "matte_Specular_purple",
+            "TRANS": [-2.0, 3.0, 2.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [2.75, 2.75, 2.75]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "mirror",
+            "TRANS": [6.0, 3.0, 0.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.5, 1.5, 1.5]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "Glass_red",
+            "TRANS": [-3.0, 2.0, -1.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [4.5, 4.5, 4.5]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "Glass_green",
+            "TRANS": [2.0, 5.0, -3.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [2.5, 2.5, 2.5]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "Glass_blue",
+            "TRANS": [2.0, 5.0, 3.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.5, 1.5, 1.5]
+        }
+    ]
+}
