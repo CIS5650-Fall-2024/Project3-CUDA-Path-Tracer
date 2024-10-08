@@ -1,0 +1,139 @@
+{
+    "Materials":
+    {
+        "light":
+        {
+            "TYPE":"Emitting",
+            "RGB":[1.0, 1.0, 1.0],
+            "EMITTANCE":5.0
+        },
+        "diffuse_wall": 
+        {
+          "TYPE" : "Diffuse",
+          "RGB" : [0.25, 0.21, 0.78]
+        },
+        "mirror": 
+        {
+          "TYPE": "Specular",
+          "RGB" : [0.98, 0.98, 0.98],
+          "ROUGHNESS": 0.0
+        },
+        "sphere_dielectric": 
+        {
+          "TYPE":"SpecularTransmissive",
+          "RGB":[0.98, 0.98, 0.98],
+          "ETA":[1.0, 1.55]
+        },
+        "sphere_diffuse": 
+        {
+          "TYPE" : "Diffuse",
+          "RGB" : [0.85, 0.21, 0.28]
+        }
+    },
+    "Camera":
+    {
+        "RES":[800,800],
+        "FOVY":45.0,
+        "ITERATIONS":5000,
+        "DEPTH":8,
+        "FILE":"reflectingroomformatted",
+        "EYE":[0.0,5.0,10.5],
+        "LOOKAT":[0.0,5.0,0.0],
+        "UP":[0.0,1.0,0.0]
+    },
+    "Objects":
+    [
+        {
+          "TYPE" : "cube",
+          "MATERIAL" : "light",
+          "TRANS" : [-3, 7.45, 10],
+          "ROTAT" : [90, 0, 0],
+          "SCALE" : [3, 3, 1]
+        },
+        {
+          "TYPE" : "cube",
+          "MATERIAL" : "mirror",
+          "TRANS" : [0, -2.5, 0],
+          "ROTAT" : [-90, 0, 0],
+          "SCALE" : [10, 10, 0.01]
+        },
+        {
+          "TYPE" : "cube",
+          "MATERIAL" : "mirror",
+          "TRANS" : [0, -2.5, 8],
+          "ROTAT" : [-90, 0, -10],
+          "SCALE" : [12, 12, 0.01]
+        },
+        {
+          "TYPE" : "cube",
+          "MATERIAL" : "diffuse_wall",
+          "TRANS" : [5, 2.5, 0],
+          "ROTAT" : [0, -90, 0],
+          "SCALE" : [10, 10, 0.01]
+        },
+        {
+          "TYPE" : "cube",
+          "MATERIAL" : "diffuse_wall",
+          "TRANS" : [4.17,2.5,9.8],
+          "ROTAT" : [0, -100, 0],
+          "SCALE" : [10, 13, 0.01]
+        },
+        {
+          "TYPE" : "cube",
+          "MATERIAL" : "diffuse_wall",
+          "TRANS" : [-5, 2.5, 0],
+          "ROTAT" : [0, 90, 0],
+          "SCALE" : [10, 10, 0.01]
+        },
+        {
+          "TYPE" : "cube",
+          "MATERIAL" : "diffuse_wall",
+          "TRANS" : [-4.17, 2.5, 10],
+          "ROTAT" : [0, 80, 0],
+          "SCALE" : [10, 13, 0.01]
+          
+        },
+        {
+          "TYPE" : "cube",
+          "MATERIAL" : "diffuse_wall",
+          "TRANS" : [-4, 2.5, 4.5],
+          "ROTAT" : [0, 180, 0],
+          "SCALE" : [7.5, 10, 0.01]
+        },
+        {
+          "TYPE" : "cube",
+          "MATERIAL" : "mirror",
+          "TRANS" : [-1.5, 2.5, 13],
+          "ROTAT" : [0, 170,0],
+          "SCALE" : [10, 10, 0.01]
+        },
+        {
+          "TYPE" : "cube",
+          "MATERIAL" : "diffuse_wall",
+          "TRANS" : [0, 7.5, 0],
+          "ROTAT" : [90, 0, 0],
+          "SCALE" : [10, 10, 0.01]
+        },
+        {
+          "TYPE" : "cube",
+          "MATERIAL" : "diffuse_wall",
+          "TRANS" : [0, 7.5, 10],
+          "ROTAT" : [90, 0, 0],
+          "SCALE" : [10, 10, 0.01]
+        },
+        {
+          "TYPE" : "sphere",
+          "MATERIAL" : "sphere_diffuse",
+          "TRANS" : [-2, 1.5, 8],
+          "ROTAT" : [0, 0, 0],
+          "SCALE" : [0.75, 0.75, 0.75]
+        },
+        {
+          "TYPE" : "sphere",
+          "MATERIAL" : "sphere_dielectric",
+          "TRANS" : [3, 1.5, 8],
+          "ROTAT" : [0, 0, 0],
+          "SCALE" : [1.25, 1.25, 1.25]
+        }
+    ]
+}

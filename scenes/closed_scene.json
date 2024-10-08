@@ -1,0 +1,203 @@
+{
+    "Materials":
+    {
+        "light":
+        {
+            "TYPE":"Emitting",
+            "RGB":[1.0, 1.0, 1.0],
+            "EMITTANCE":70.0
+        },
+        "perfect_diffuse_red":
+        {
+            "TYPE":"Diffuse",
+            "RGB":[1.0, 0.0, 0.0]
+        },
+        "perfect_diffuse_aqua":
+        {
+            "TYPE":"Diffuse",
+            "RGB":[0.0, 0.5, 0.6]
+        },
+        "perfect_diffuse_ship":
+        {
+            "TYPE":"Diffuse",
+            "RGB":[1.0, 0.0, 1.0]
+        },
+        "diffuse_left":
+        {
+            "TYPE":"Diffuse",
+            "RGB":[0.28, 0.98, 0.58]
+        },
+        "diffuse_right":
+        {
+            "TYPE":"Diffuse",
+            "RGB":[0.95, 0.25, 0.95]
+        },
+        "diffuse_front_back":
+        {
+            "TYPE":"Diffuse",
+            "RGB":[0.15, 0.15, 0.95]
+        },
+        "diffuse_top_bottom":
+        {
+            "TYPE":"Diffuse",
+            "RGB":[0.35, 0.75, 0.45]
+        },
+        "perfect_specular":
+        {
+            "TYPE":"Specular",
+            "RGB":[0.98, 0.98, 0.98]
+        },
+        "specular_transmissive_white":
+        {
+            "TYPE":"SpecularTransmissive",
+            "RGB":[0.98, 0.98, 0.98],
+            "ETA":[1.0, 1.55]
+        },
+        "table_tex":
+        {
+            "TYPE":"Texture",
+            "FILE":"C:/Users/danie/Desktop/School/CIS 5650/Project3/scenes/textures/table_tex.jpeg",
+            "WIDTH":512,
+            "HEIGHT":512
+        },
+        "table_bump":
+        {
+            "TYPE":"BumpMap",
+            "FILE":"C:/Users/danie/Desktop/School/CIS 5650/Project3/scenes/textures/table_nor.png",
+            "WIDTH":512,
+            "HEIGHT":512
+        }
+    },
+    "Camera":
+    {
+        "RES":[800,800],
+        "FOVY":45.0,
+        "ITERATIONS":5000,
+        "DEPTH":8,
+        "FILE":"cornell",
+        "EYE":[0.0,5.0,10.5],
+        "LOOKAT":[0.0,5.0,0.0],
+        "UP":[0.0,1.0,0.0]
+    },
+    "Objects":
+    [
+        {
+            "TYPE":"cube",
+            "MATERIAL":"diffuse_right",
+            "TRANS":[0.0,0.0,0.0],
+            "ROTAT":[0.0,0.0,0.0],
+            "SCALE":[20.0,0.01,30.0]
+        },
+        {
+            "TYPE":"cube",
+            "MATERIAL":"diffuse_top_bottom",
+            "TRANS":[0.0,20.0,0.0],
+            "ROTAT":[0.0,0.0,90.0],
+            "SCALE":[0.01,20.0,30.0]
+        },
+        {
+            "TYPE":"cube",
+            "MATERIAL":"diffuse_front_back",
+            "TRANS":[0.0,10.0,-10.0],
+            "ROTAT":[0.0,90.0,0.0],
+            "SCALE":[0.01,20.0,20.0]
+        },
+        {
+            "TYPE":"cube",
+            "MATERIAL":"diffuse_right",
+            "TRANS":[-10.0,10.0,0.0],
+            "ROTAT":[0.0,0.0,0.0],
+            "SCALE":[0.01,20.0,30.0]
+        },
+        {
+            "TYPE":"cube",
+            "MATERIAL":"diffuse_left",
+            "TRANS":[10.0,10.0,0.0],
+            "ROTAT":[0.0,0.0,0.0],
+            "SCALE":[0.01,20.0,30.0]
+        },
+        {
+            "TYPE":"cube",
+            "MATERIAL":"diffuse_front_back",
+            "TRANS":[0.0,10.0,15.0],
+            "ROTAT":[0.0,90.0,0.0],
+            "SCALE":[0.01,20.0,20.0]
+        },
+        {
+            "TYPE":"sphere",
+            "MATERIAL":"perfect_diffuse_red",
+            "TRANS":[-5.0,5.0,0.0],
+            "ROTAT":[0.0,0.0,0.0],
+            "SCALE":[5.0,5.0,5.0]
+        },
+        {
+            "TYPE":"sphere",
+            "MATERIAL":"perfect_specular",
+            "TRANS":[5.0,5.0,0.0],
+            "ROTAT":[0.0,0.0,0.0],
+            "SCALE":[5.0,5.0,5.0]
+        },
+        {
+            "TYPE":"sphere",
+            "MATERIAL":"specular_transmissive_white",
+            "TRANS":[0.0,5.0,-0.5],
+            "ROTAT":[0.0,0.0,0.0],
+            "SCALE":[4.5,4.5,4.5]
+        },
+        {
+            "TYPE":"sphere",
+            "MATERIAL":"light",
+            "TRANS":[5.0,13.0,0.0],
+            "ROTAT":[0.0,0.0,0.0],
+            "SCALE":[2.0,2.0,2.0]
+        },
+        {
+            "TYPE":"sphere",
+            "MATERIAL":"light",
+            "TRANS":[-5.0,13.0,0.0],
+            "ROTAT":[0.0,0.0,0.0],
+            "SCALE":[2.0,2.0,2.0]
+        },
+        {
+            "TYPE":"mesh",
+            "MATERIAL":"perfect_diffuse_aqua",
+            "BUMPMAP":"",
+            "TRANS":[0.0,8.0,0.0],
+            "ROTAT":[0.0,0.0,0.0],
+            "SCALE":[0.05,0.05,0.05],
+            "FILE":"",
+            "FILE":"C:/Users/danie/Desktop/School/CIS 5650/Project3/scenes/objs/stanford_dragon.obj",
+            "FILE_FOLDER":"C:/Users/danie/Desktop/School/CIS 5650/Project3/scenes/objs/"
+        },
+        {
+            "TYPE":"mesh",
+            "MATERIAL":"table_tex",
+            "BUMPMAP":"",
+            "TRANS":[0.0,-3.0,0.0],
+            "ROTAT":[0.0,0.0,0.0],
+            "SCALE":[10.0,10.0,10.0],
+            "FILE":"C:/Users/danie/Desktop/School/CIS 5650/Project3/scenes/objs/table.obj",
+            "FILE_FOLDER":"C:/Users/danie/Desktop/School/CIS 5650/Project3/scenes/objs/"
+        },
+        {
+            "TYPE":"mesh",
+            "MATERIAL":"perfect_diffuse_ship",
+            "BUMPMAP":"",
+            "TRANS":[4.0,2.0,5.0],
+            "ROTAT":[0.0,0.0,0.0],
+            "SCALE":[1.0,1.0,1.0],
+            "FILE":"C:/Users/danie/Desktop/School/CIS 5650/Project3/scenes/objs/bunny.obj",
+            "FILE_FOLDER":"C:/Users/danie/Desktop/School/CIS 5650/Project3/scenes/objs/"
+        },
+        {
+            "TYPE":"mesh",
+            "MATERIAL":"perfect_diffuse_ship",
+            "BUMPMAP":"",
+            "TRANS":[-2.0,2.0,5.0],
+            "ROTAT":[0.0,0.0,0.0],
+            "SCALE":[1.0,1.0,1.0],
+            "FILE":"C:/Users/danie/Desktop/School/CIS 5650/Project3/scenes/objs/bunny.obj",
+            "FILE_FOLDER":"C:/Users/danie/Desktop/School/CIS 5650/Project3/scenes/objs/"
+        }
+    ]
+}

@@ -42,4 +42,8 @@ __host__ __device__ void scatterRay(
     glm::vec3 intersect,
     glm::vec3 normal,
     const Material& m,
-    thrust::default_random_engine& rng);
+    thrust::default_random_engine& rng,
+    glm::vec3 &out_ray);
+
+
+__device__ glm::vec3 matWood(glm::vec3 p);

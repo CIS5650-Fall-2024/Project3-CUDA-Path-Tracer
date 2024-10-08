@@ -1,6 +1,7 @@
 #include "main.h"
 #include "preview.h"
 #include <cstring>
+#include <chrono>
 
 static std::string startTimeString;
 
@@ -87,6 +88,22 @@ int main(int argc, char** argv)
 
 void saveImage()
 {
+    auto start = chrono::system_clock::now();
+    auto start_duration = start.time_since_epoch();
+    auto start_milliseconds
+        = chrono::duration_cast<chrono::milliseconds>(
+            start_duration)
+        .count();
+    updateSceneRender(glm::ivec2(width, height));
+    auto end = chrono::system_clock::now();
+    auto end_duration = end.time_since_epoch();
+    auto end_milliseconds
+        = chrono::duration_cast<chrono::milliseconds>(
+            end_duration)
+        .count();
+
+    std::cout << "Final render production in " << end_milliseconds - start_milliseconds << " ms.\n";
+
     float samples = iteration;
     // output image file
     Image img(width, height);

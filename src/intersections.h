@@ -71,3 +71,37 @@ __host__ __device__ float sphereIntersectionTest(
     glm::vec3& intersectionPoint,
     glm::vec3& normal,
     bool& outside);
+
+__host__ __device__ float triangleIntersectionTest(
+    Geom geom_triangle,
+    Ray r,
+    glm::vec3& intersectionPoint,
+    glm::vec3& normal,
+    bool& outside,
+    Triangle* dev_tris,
+    int tri_index);
+
+__host__ __device__ float naiveMeshIntersectionTest(
+    Ray r,
+    glm::vec3& intersectionPoint,
+    glm::vec3& normal,
+    glm::vec2& uv,
+    int& material_tex_id,
+    int& bumpmap_id,
+    bool& outside,
+    Triangle* dev_tris,
+    int num_tris);
+
+__host__ __device__ float bvhIntersectionTest(
+    Ray r,
+    glm::vec3& intersectionPoint,
+    glm::vec3& normal,
+    glm::vec2& uv,
+    int& material_tex_id,
+    int& bumpmap_id,
+    bool& outside,
+    BVHNode* bvhNodes,
+    Triangle* mesh_triangles,
+    int num_tris);
+
+__host__ __device__ bool intersectAABB(const Ray& ray, const AABbox& aabb, float& t_out);

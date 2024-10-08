@@ -1,0 +1,111 @@
+{
+    "Materials":
+    {
+        "light":
+        {
+            "TYPE":"Emitting",
+            "RGB":[0.8, 0.1, 0.1],
+            "EMITTANCE":250.0
+        },
+        "table_tex":
+        {
+            "TYPE":"Texture",
+            "FILE":"C:/Users/danie/Desktop/School/CIS 5650/Project3/scenes/textures/table_tex.jpeg",
+            "WIDTH":512,
+            "HEIGHT":512
+        },
+        "table_bump":
+        {
+            "TYPE":"BumpMap",
+            "FILE":"C:/Users/danie/Desktop/School/CIS 5650/Project3/scenes/textures/table_nor.jpeg",
+            "WIDTH":512,
+            "HEIGHT":512
+        },
+        "lantern_tex":
+        {
+            "TYPE":"Texture",
+            "FILE":"C:/Users/danie/Desktop/School/CIS 5650/Project3/scenes/textures/lantern_Base_Color.jpg",
+            "WIDTH":2048,
+            "HEIGHT":2048
+        },
+        "lantern_bump":
+        {
+            "TYPE":"BumpMap",
+            "FILE":"C:/Users/danie/Desktop/School/CIS 5650/Project3/scenes/textures/lantern_Normal_OpenGL.jpg",
+            "WIDTH":2048,
+            "HEIGHT":2048
+        },
+        "sword_tex":
+        {
+            "TYPE":"Texture",
+            "FILE":"C:/Users/danie/Desktop/School/CIS 5650/Project3/scenes/textures/SwordColorA2.png",
+            "WIDTH":4096,
+            "HEIGHT":4096
+        },
+        "sword_bump":
+        {
+            "TYPE":"BumpMap",
+            "FILE":"C:/Users/danie/Desktop/School/CIS 5650/Project3/scenes/textures/SwordNormalA2.png",
+            "WIDTH":4096,
+            "HEIGHT":4096
+        },
+        "env_map":
+        {
+            "TYPE":"EnvironmentMap",
+            "FILE":"C:/Users/danie/Desktop/School/CIS 5650/Project3/scenes/environmentmaps/small_empty_room_2_2k.hdr",
+            "WIDTH":2048,
+            "HEIGHT":1024
+        }
+    },
+    "Camera":
+    {
+        "RES":[800,800],
+        "FOVY":45.0,
+        "ITERATIONS":5000,
+        "DEPTH":8,
+        "FILE":"cornell",
+        "EYE":[0.0,5.0,10.5],
+        "LOOKAT":[0.0,5.0,0.0],
+        "UP":[0.0,1.0,0.0]
+    },
+    "Objects":
+    [
+        {
+            "TYPE":"cube",
+            "MATERIAL":"light",
+            "TRANS":[-10.0,12.0,0.0],
+            "ROTAT":[0.0,0.0,55.0],
+            "SCALE":[3.0,0.3,3.0]
+        },
+        {
+            "TYPE":"mesh",
+            "MATERIAL":"table_tex",
+            "BUMPMAP":"table_bump",
+            "TRANS":[0.0,-3.0,0.0],
+            "ROTAT":[0.0,0.0,0.0],
+            "SCALE":[10.0,10.0,10.0],
+            "FILE":"C:/Users/danie/Desktop/School/CIS 5650/Project3/scenes/objs/table.obj",
+            "FILE_FOLDER":"C:/Users/danie/Desktop/School/CIS 5650/Project3/scenes/objs/"
+        },
+        {
+            "TYPE":"mesh",
+            "MATERIAL":"lantern_tex",
+            "BUMPMAP":"lantern_bump",
+            "TRANS":[0.0,2.5,0.0],
+            "ROTAT":[0.0,0.0,0.0],
+            "SCALE":[0.07,0.07,0.07],
+            "FILE":"C:/Users/danie/Desktop/School/CIS 5650/Project3/scenes/objs/lantern.obj",
+            "FILE_FOLDER":"C:/Users/danie/Desktop/School/CIS 5650/Project3/scenes/objs/"
+        },
+        {
+            "TYPE":"mesh",
+            "MATERIAL":"sword_tex",
+            "BUMPMAP":"sword_bump",
+            "TRANS":[-2.0,0.0,6.0],
+            "ROTAT":[0.0,175.0,0.0],
+            "SCALE":[3.0,3.0,3.0],
+            "FILE":"C:/Users/danie/Desktop/School/CIS 5650/Project3/scenes/objs/sword.obj",
+            "FILE_FOLDER":"C:/Users/danie/Desktop/School/CIS 5650/Project3/scenes/objs/"
+        }
+    ]
+}
