@@ -27,6 +27,8 @@ int iteration;
 int width;
 int height;
 
+#define out_img_folder "/home/josh/Courses/CIS5650/Project3-CUDA-Path-Tracer/out_imgs/"
+
 //-------------------------------
 //-------------MAIN--------------
 //-------------------------------
@@ -103,12 +105,12 @@ void saveImage()
 
     std::string filename = renderState->imageName;
     std::ostringstream ss;
-    ss << filename << "." << startTimeString << "." << samples << "samp";
+    ss << out_img_folder << filename << "." << startTimeString << "." << samples << "samp";
     filename = ss.str();
 
     // CHECKITOUT
     img.savePNG(filename);
-    //img.saveHDR(filename);  // Save a Radiance HDR file
+    img.saveHDR(filename);  // Save a Radiance HDR file
 }
 
 void runCuda()
