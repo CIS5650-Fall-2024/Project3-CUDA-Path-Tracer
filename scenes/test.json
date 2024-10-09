@@ -1,0 +1,85 @@
+{
+    "Materials": {
+        "light": {
+            "TYPE": "Emitting",
+            "RGB": [1.0, 1.0, 1.0],
+            "EMITTANCE": 5.0
+        },
+        "diffuse_red": {
+            "TYPE": "Diffuse",
+            "RGB": [1.0, 0.0, 0.0],
+            "REFLECTIVITY": 0.0
+        },
+        "diffuse_green": {
+            "TYPE": "Diffuse",
+            "RGB": [0.0, 1.0, 0.0],
+            "REFLECTIVITY": 0.0
+        },
+        "specular_mirror": {
+            "TYPE": "Specular",
+            "RGB": [0.9, 0.9, 0.9],
+            "REFLECTIVITY": 1.0
+        }
+    },
+    "Camera": {
+        "RES": [800, 800],
+        "FOVY": 45.0,
+        "ITERATIONS": 5000,
+        "DEPTH": 8,
+        "FILE": "sphere_scene",
+        "EYE": [0.0, 5.0, 15.0],
+        "LOOKAT": [0.0, 5.0, 0.0],
+        "UP": [0.0, 1.0, 0.0]
+    },
+    "Objects": [
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "light",
+            "TRANS": [0.0, 10.0, 0.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.0, 1.0, 1.0]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "diffuse_red",
+            "TRANS": [-3.0, 0.0, 0.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [2.0, 2.0, 2.0]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "diffuse_green",
+            "TRANS": [3.0, 0.0, 0.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [2.0, 2.0, 2.0]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "specular_mirror",
+            "TRANS": [0.0, 0.0, -5.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.5, 1.5, 1.5]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "specular_mirror",
+            "TRANS": [0.0, 0.0, 5.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.5, 1.5, 1.5]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "diffuse_red",
+            "TRANS": [-5.0, 0.0, 5.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.5, 1.5, 1.5]
+        },
+        {
+            "TYPE": "sphere",
+            "MATERIAL": "diffuse_green",
+            "TRANS": [5.0, 0.0, -5.0],
+            "ROTAT": [0.0, 0.0, 0.0],
+            "SCALE": [1.5, 1.5, 1.5]
+        }
+    ]
+}

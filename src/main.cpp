@@ -1,6 +1,7 @@
 #include "main.h"
 #include "preview.h"
 #include <cstring>
+#include <glm/gtx/string_cast.hpp>
 
 static std::string startTimeString;
 
@@ -27,6 +28,9 @@ int iteration;
 int width;
 int height;
 
+static float prevFocalLength;
+static float prevApertureRadius;
+
 //-------------------------------
 //-------------MAIN--------------
 //-------------------------------
@@ -46,8 +50,6 @@ int main(int argc, char** argv)
     // Load scene file
     scene = new Scene(sceneFile);
 
-    //Create Instance for ImGUIData
-    guiData = new GuiDataContainer();
 
     // Set up camera stuff from loaded path tracer settings
     iteration = 0;
@@ -55,6 +57,11 @@ int main(int argc, char** argv)
     Camera& cam = renderState->camera;
     width = cam.resolution.x;
     height = cam.resolution.y;
+
+    //Create Instance for ImGUIData
+    guiData = new GuiDataContainer(cam.focalLength, cam.apertureRadius);
+    prevFocalLength = cam.focalLength;
+    prevApertureRadius = cam.apertureRadius;
 
     glm::vec3 view = cam.view;
     glm::vec3 up = cam.up;
@@ -106,9 +113,53 @@ void saveImage()
     ss << filename << "." << startTimeString << "." << samples << "samp";
     filename = ss.str();
 
+    std::cout << "Camera stats:" << std::endl;
+    std::cout << "FOV: " << glm::to_string(renderState->camera.fov) << std::endl;
+    std::cout << "Position: " << glm::to_string(renderState->camera.position) << std::endl;
+    std::cout << "LookAt:" << glm::to_string(renderState->camera.lookAt) << std::endl;
+    std::cout << "View: " << glm::to_string(renderState->camera.view) << std::endl;
+    std::cout << "Up: " << glm::to_string(renderState->camera.up) << std::endl;
+    std::cout << "Right: " << glm::to_string(renderState->camera.right) << std::endl;
     // CHECKITOUT
     img.savePNG(filename);
     //img.saveHDR(filename);  // Save a Radiance HDR file
+}
+
+void drawBoundingBox(const glm::vec3& mins, const glm::vec3& maxs, const glm::vec3& color) {
+    glColor3f(color.r, color.g, color.b);
+    glBegin(GL_LINES);
+
+    glVertex3f(mins.x, mins.y, mins.z); glVertex3f(maxs.x, mins.y, mins.z);
+    glVertex3f(mins.x, mins.y, mins.z); glVertex3f(mins.x, maxs.y, mins.z);
+    glVertex3f(mins.x, mins.y, mins.z); glVertex3f(mins.x, mins.y, maxs.z);
+
+    glVertex3f(maxs.x, maxs.y, maxs.z); glVertex3f(mins.x, maxs.y, maxs.z);
+    glVertex3f(maxs.x, maxs.y, maxs.z); glVertex3f(maxs.x, mins.y, maxs.z);
+    glVertex3f(maxs.x, maxs.y, maxs.z); glVertex3f(maxs.x, maxs.y, mins.z);
+
+    glVertex3f(mins.x, maxs.y, mins.z); glVertex3f(maxs.x, maxs.y, mins.z);
+    glVertex3f(maxs.x, mins.y, mins.z); glVertex3f(maxs.x, maxs.y, mins.z);
+    glVertex3f(mins.x, maxs.y, maxs.z); glVertex3f(maxs.x, maxs.y, maxs.z);
+
+    glVertex3f(mins.x, mins.y, maxs.z); glVertex3f(maxs.x, mins.y, maxs.z);
+    glVertex3f(maxs.x, mins.y, mins.z); glVertex3f(maxs.x, mins.y, maxs.z);
+    glVertex3f(mins.x, mins.y, maxs.z); glVertex3f(mins.x, maxs.y, maxs.z);
+
+    glEnd();
+}
+
+bool dofChanged()
+{
+    if (guiData->ApertureRadius != prevApertureRadius || guiData->FocalLength != prevFocalLength)
+    {
+        Camera& cam = renderState->camera;
+        prevFocalLength = guiData->FocalLength;
+        prevApertureRadius = guiData->ApertureRadius;
+        cam.focalLength = guiData->FocalLength;
+        cam.apertureRadius = guiData->ApertureRadius;
+        return true;
+    }
+    return false;
 }
 
 void runCuda()
@@ -132,6 +183,11 @@ void runCuda()
         cameraPosition += cam.lookAt;
         cam.position = cameraPosition;
         camchanged = false;
+    }
+
+    if (dofChanged())
+    {
+        iteration = 0;
     }
 
     // Map OpenGL buffer object for writing from CUDA on a single GPU

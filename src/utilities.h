@@ -17,8 +17,10 @@
 class GuiDataContainer
 {
 public:
-    GuiDataContainer() : TracedDepth(0) {}
+    GuiDataContainer(float focal, float aperture) : TracedDepth(0), FocalLength(focal), ApertureRadius(aperture) {}
     int TracedDepth;
+    float FocalLength;
+    float ApertureRadius;
 };
 
 namespace utilityCore

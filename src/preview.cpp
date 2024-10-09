@@ -204,7 +204,6 @@ void InitImguiData(GuiDataContainer* guiData)
     imguiData = guiData;
 }
 
-
 // LOOK: Un-Comment to check ImGui Usage
 void RenderImGui()
 {
@@ -236,6 +235,10 @@ void RenderImGui()
     //ImGui::Text("counter = %d", counter);
     ImGui::Text("Traced Depth %d", imguiData->TracedDepth);
     ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
+    ImGui::SliderFloat("Focal Length", &imguiData->FocalLength, 0.f, 15.f);
+    ImGui::SliderFloat("Aperture Radius", &imguiData->ApertureRadius, 0.f, 1.f);
+
     ImGui::End();
 
 

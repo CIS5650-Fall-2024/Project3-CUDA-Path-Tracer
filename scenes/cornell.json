@@ -27,6 +27,46 @@
             "TYPE":"Specular",
             "RGB":[0.98, 0.98, 0.98],
             "ROUGHNESS":0.0
+        },
+	"specular_glass":
+        {
+            "TYPE":"Glass",
+            "RGB":[0.98, 0.98, 0.98]
+        },
+	"micro_1":
+        {
+            "TYPE":"Microfacet",
+            "RGB":[0.98, 0.98, 0.98],
+	    "SPEC_RGB": [0.5, 0.5, 0.5],
+            "ROUGHNESS":0.1
+        },
+        "micro_2":
+        {
+            "TYPE":"Microfacet",
+            "RGB":[0.98, 0.98, 0.98],
+	    "SPEC_RGB": [0.5, 0.5, 0.5],
+            "ROUGHNESS":0.3
+        },
+	"micro_3":
+        {
+            "TYPE":"Microfacet",
+            "RGB":[0.98, 0.98, 0.98],
+	    "SPEC_RGB": [0.5, 0.5, 0.5],
+            "ROUGHNESS":0.5
+        },
+	"micro_4":
+        {
+            "TYPE":"Microfacet",
+            "RGB":[0.98, 0.98, 0.98],
+	    "SPEC_RGB": [0.5, 0.5, 0.5],
+            "ROUGHNESS":0.7
+        },
+	"micro_5":
+        {
+            "TYPE":"Microfacet",
+            "RGB":[0.98, 0.98, 0.98],
+	    "SPEC_RGB": [0.5, 0.5, 0.5],
+            "ROUGHNESS":0.9
         }
     },
     "Camera":
@@ -38,7 +78,9 @@
         "FILE":"cornell",
         "EYE":[0.0,5.0,10.5],
         "LOOKAT":[0.0,5.0,0.0],
-        "UP":[0.0,1.0,0.0]
+        "UP":[0.0,1.0,0.0],
+	"FOCALLENGTH": 1.5,
+	"APERTURE": 0.1
     },
     "Objects":
     [
@@ -47,7 +89,7 @@
             "MATERIAL":"light",
             "TRANS":[0.0,10.0,0.0],
             "ROTAT":[0.0,0.0,0.0],
-            "SCALE":[3.0,0.3,3.0]
+            "SCALE":[4.0,0.3,4.0]
         },
         {
             "TYPE":"cube",
@@ -86,10 +128,38 @@
         },
         {
             "TYPE":"sphere",
-            "MATERIAL":"specular_white",
-            "TRANS":[-1.0,4.0,-1.0],
+            "MATERIAL":"micro_1",
+            "TRANS":[-2.5,6.0,0.0],
             "ROTAT":[0.0,0.0,0.0],
-            "SCALE":[3.0,3.0,3.0]
+            "SCALE":[2.0,2.0,2.0]
+        },
+        {
+            "TYPE":"sphere",
+            "MATERIAL":"micro_2",
+            "TRANS":[0.0,6.0,0.0],
+            "ROTAT":[0.0,0.0,0.0],
+            "SCALE":[2.0,2.0,2.0]
+        },
+        {
+            "TYPE":"sphere",
+            "MATERIAL":"micro_3",
+            "TRANS":[2.5,6.0,0.0],
+            "ROTAT":[0.0,0.0,0.0],
+            "SCALE":[2.0,2.0,2.0]
+        },
+        {
+            "TYPE":"sphere",
+            "MATERIAL":"micro_4",
+            "TRANS":[-1.5,3.5,0.0],
+            "ROTAT":[0.0,0.0,0.0],
+            "SCALE":[2.0,2.0,2.0]
+        },
+        {
+            "TYPE":"sphere",
+            "MATERIAL":"micro_5",
+            "TRANS":[1.5,3.5,0.0],
+            "ROTAT":[0.0,0.0,0.0],
+            "SCALE":[2.0,2.0,2.0]
         }
     ]
 }
