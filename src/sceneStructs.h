@@ -10,7 +10,8 @@
 enum GeomType
 {
     SPHERE,
-    CUBE
+    CUBE,
+    MESH
 };
 
 struct Ray
@@ -29,6 +30,11 @@ struct Geom
     glm::mat4 transform;
     glm::mat4 inverseTransform;
     glm::mat4 invTranspose;
+
+    // mesh
+    int meshStart;
+    int meshCount;
+    int bvhRootIndex = -1;
 };
 
 struct Material
@@ -43,6 +49,7 @@ struct Material
     float hasRefractive;
     float indexOfRefraction;
     float emittance;
+    float roughness;
 };
 
 struct Camera
@@ -55,6 +62,10 @@ struct Camera
     glm::vec3 right;
     glm::vec2 fov;
     glm::vec2 pixelLength;
+
+    // depth of field
+    float focalDistance;
+    float aperture;
 };
 
 struct RenderState
@@ -72,6 +83,7 @@ struct PathSegment
     glm::vec3 color;
     int pixelIndex;
     int remainingBounces;
+    bool insideObject;
 };
 
 // Use with a corresponding PathSegment to do:
@@ -79,7 +91,44 @@ struct PathSegment
 // 2) BSDF evaluation: generate a new ray
 struct ShadeableIntersection
 {
-  float t;
-  glm::vec3 surfaceNormal;
-  int materialId;
+    float t;
+    glm::vec3 surfaceNormal;
+    int materialId;
+    glm::vec2 uv;
+    bool outside;
+    glm::vec3 intersectionPoint;
+};
+
+struct AABB {
+    glm::vec3 minBounds = glm::vec3(FLT_MAX);
+    glm::vec3 maxBounds = glm::vec3(-FLT_MAX);
+    glm::vec3 centroid = glm::vec3(0.f);
+};
+
+struct Triangle {
+    int v[3];
+    int n[3];
+    int uv[3];
+    int materialId;
+
+    AABB aabb;
+};
+
+struct BVHNode {
+    AABB aabb;
+    int startIndex = -1;
+    int leftChildIndex = -1;
+    int rightChildIndex = -1;
+    int primitiveCount = -1;
+    int axis = -1;
+};
+
+struct LinearBVHNode {
+    AABB aabb;
+    union {
+        int primitivesOffset;
+        int secondChildOffset;
+    };
+    int nPrimitives;
+    int axis;
 };
