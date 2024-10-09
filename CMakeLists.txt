@@ -50,6 +50,39 @@ set(GLM_ROOT_DIR "${CMAKE_SOURCE_DIR}/external")
 find_package(GLM REQUIRED)
 include_directories(${GLM_INCLUDE_DIRS})
 
+# Include tinygltf header
+include_directories("${CMAKE_SOURCE_DIR}/external/include")
+
+# Include OIDN headers
+include_directories("${CMAKE_SOURCE_DIR}/external/include/OpenImageDenoise")
+
+# Define OIDN libraries
+set(OIDN_LIBRARIES
+    "${CMAKE_SOURCE_DIR}/external/lib/OpenImageDenoise.lib"
+    "${CMAKE_SOURCE_DIR}/external/lib/OpenImageDenoise_core.lib"
+    "${CMAKE_SOURCE_DIR}/external/lib/OpenImageDenoise_device_cuda.lib"
+    "${CMAKE_SOURCE_DIR}/external/lib/OpenImageDenoise_device_cpu.lib"
+    "${CMAKE_SOURCE_DIR}/external/lib/OpenImageDenoise_utils.lib"
+    "${CMAKE_SOURCE_DIR}/external/lib/tbb12.lib"
+)
+
+# Define the destination directory
+set(OIDN_DEST_DIR "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+
+# Add a custom command to copy the OIDN libraries
+foreach(OIDN_LIB ${OIDN_LIBRARIES})
+    get_filename_component(OIDN_LIB_NAME ${OIDN_LIB} NAME)
+    add_custom_command(
+        OUTPUT "${OIDN_DEST_DIR}/${OIDN_LIB_NAME}"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${OIDN_LIB} ${OIDN_DEST_DIR}
+        DEPENDS ${OIDN_LIB}
+    )
+    list(APPEND OIDN_COPY_TARGETS "${OIDN_DEST_DIR}/${OIDN_LIB_NAME}")
+endforeach()
+
+# Add a custom target to execute the copy command
+add_custom_target(copy_oidn_libs ALL DEPENDS ${OIDN_COPY_TARGETS})
+
 set(headers
     src/main.h
     src/image.h
@@ -66,6 +99,7 @@ set(headers
 set(sources
     src/main.cpp
     src/stb.cpp
+    src/tinygltf.cpp
     src/image.cpp
     src/glslUtility.cpp
     src/pathtrace.cu
@@ -120,11 +154,22 @@ elseif(CMAKE_VERSION VERSION_LESS "3.24.0")
 else()
     set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES CUDA_ARCHITECTURES native)
 endif()
+
+# Link OIDN libraries only in Release mode
 target_link_libraries(${CMAKE_PROJECT_NAME}
     ${LIBRARIES}
     cudadevrt
+    $<$<CONFIG:Release>:${OIDN_LIBRARIES}>
     #stream_compaction  # TODO: uncomment if using your stream compaction
-    )
+)
+
+# Add dependencies for copying OIDN libraries only in Release mode
+add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E echo "Copying OIDN libraries..."
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<$<CONFIG:Release>:${OIDN_LIBRARIES}> ${OIDN_DEST_DIR}
+    COMMENT "Copying OIDN libraries in Release mode"
+)
+
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE "$<$<AND:$<CONFIG:Debug,RelWithDebInfo>,$<COMPILE_LANGUAGE:CUDA>>:-G;-src-in-ptx>")
-target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE "$<$<AND:$<CONFIG:Release>,$<COMPILE_LANGUAGE:CUDA>>:-lineinfo;-src-in-ptx>")
+target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE "$<$<AND:$<CONFIG:Release>,$<COMPILE_LANGUAGE:CUDA>>:-lineinfo;-src-in-ptx>;--extended-lambda")
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${CMAKE_PROJECT_NAME})

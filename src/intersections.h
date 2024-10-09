@@ -65,9 +65,26 @@ __host__ __device__ float boxIntersectionTest(
  * @param outside            Output param for whether the ray came from outside.
  * @return                   Ray parameter `t` value. -1 if no intersection.
  */
-__host__ __device__ float sphereIntersectionTest(
+__device__ float sphereIntersectionTest(
     Geom sphere,
     Ray r,
     glm::vec3& intersectionPoint,
     glm::vec3& normal,
     bool& outside);
+
+__device__ float meshIntersectionTest(
+	Geom geom,
+    const Triangle* triangles,
+    const glm::vec3* vertices,
+	const glm::vec3* normals,
+    const Mesh& mesh,
+    int rootNodeIndex,
+	const BvhNode* bvhNodes,
+	const Ray& r,
+	glm::vec3& intersectionPoint,
+	glm::vec3& normal,
+	bool& outside,
+	int& hitTriangleIndex,
+    glm::vec2& baryCoords,
+    int* nodeStack,
+    float tMin);

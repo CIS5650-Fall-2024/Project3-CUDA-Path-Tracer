@@ -35,16 +35,18 @@ int main(int argc, char** argv)
 {
     startTimeString = currentTimeString();
 
-    if (argc < 2)
+    if (argc < 3)
     {
-        printf("Usage: %s SCENEFILE.json\n", argv[0]);
+        printf("Usage: %s SCENEFILE.gltf,\n %s ENVMAP.hdr", argv[0]);
         return 1;
     }
 
     const char* sceneFile = argv[1];
+	const char* envmapFile = argv[2];
 
     // Load scene file
-    scene = new Scene(sceneFile);
+    // TODO - undo hardcoding, put back args
+    scene = new Scene(sceneFile, envmapFile);
 
     //Create Instance for ImGUIData
     guiData = new GuiDataContainer();
@@ -123,7 +125,7 @@ void runCuda()
 
         cam.view = -glm::normalize(cameraPosition);
         glm::vec3 v = cam.view;
-        glm::vec3 u = glm::vec3(0, 1, 0);//glm::normalize(cam.up);
+        glm::vec3 u = glm::normalize(cam.up);
         glm::vec3 r = glm::cross(v, u);
         cam.up = glm::cross(r, v);
         cam.right = r;
@@ -139,7 +141,7 @@ void runCuda()
 
     if (iteration == 0)
     {
-        pathtraceFree();
+        pathtraceFree(scene);
         pathtraceInit(scene);
     }
 
@@ -151,7 +153,7 @@ void runCuda()
 
         // execute the kernel
         int frame = 0;
-        pathtrace(pbo_dptr, frame, iteration);
+        pathtrace(pbo_dptr, frame, iteration, renderState->iterations);
 
         // unmap buffer object
         cudaGLUnmapBufferObject(pbo);
@@ -159,7 +161,7 @@ void runCuda()
     else
     {
         saveImage();
-        pathtraceFree();
+        pathtraceFree(scene);
         cudaDeviceReset();
         exit(EXIT_SUCCESS);
     }
@@ -226,11 +228,7 @@ void mousePositionCallback(GLFWwindow* window, double xpos, double ypos)
         renderState = &scene->state;
         Camera& cam = renderState->camera;
         glm::vec3 forward = cam.view;
-        forward.y = 0.0f;
-        forward = glm::normalize(forward);
         glm::vec3 right = cam.right;
-        right.y = 0.0f;
-        right = glm::normalize(right);
 
         cam.lookAt -= (float)(xpos - lastX) * right * 0.01f;
         cam.lookAt += (float)(ypos - lastY) * forward * 0.01f;
