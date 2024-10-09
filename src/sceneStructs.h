@@ -10,7 +10,8 @@
 enum GeomType
 {
     SPHERE,
-    CUBE
+    CUBE,
+    MESH
 };
 
 struct Ray
@@ -43,6 +44,8 @@ struct Material
     float hasRefractive;
     float indexOfRefraction;
     float emittance;
+    int diffuse_textureId;
+    int normal_textureId;
 };
 
 struct Camera
@@ -55,6 +58,8 @@ struct Camera
     glm::vec3 right;
     glm::vec2 fov;
     glm::vec2 pixelLength;
+    float lens_radius = 0.3f;
+    float focal_dis = 5.0f;
 };
 
 struct RenderState
@@ -82,4 +87,34 @@ struct ShadeableIntersection
   float t;
   glm::vec3 surfaceNormal;
   int materialId;
+  glm::vec2 surfaceUV;
+  glm::vec3 tangent;
+};
+
+struct isActive {
+    __host__ __device__
+        bool operator()(const PathSegment& segment) {
+        return segment.remainingBounces > 0;
+    }
+};
+
+struct compareMatID {
+    __host__ __device__
+        bool operator()(const ShadeableIntersection& a, const ShadeableIntersection& b) {
+        return a.materialId < b.materialId;
+    }
+};
+
+struct Vertex {
+    int materialid;
+    glm::vec3 pos;
+    glm::vec3 nor;
+    glm::vec2 uv;
+    glm::vec3 tangent;
+};
+
+struct Texture {
+    int width;
+    int height;
+    int startIdx;
 };
