@@ -8,11 +8,24 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <chrono>
 
 #define PI                3.1415926535897932384626422832795028841971f
 #define TWO_PI            6.2831853071795864769252867665590057683943f
 #define SQRT_OF_ONE_THIRD 0.5773502691896257645091487805019574556476f
 #define EPSILON           0.00001f
+
+// Debugging Options:
+#define DEBUG_ALBEDO      0
+
+// Pathtracer Options:
+#define ANTIALIASING      1
+#define DENOISE		      1
+#define DISPERSION		  1
+#define TEXTURING         1
+#define BVH               1
+#define STREAM_COMPACTION 1
+#define MATERIAL_SORTING  0
 
 class GuiDataContainer
 {

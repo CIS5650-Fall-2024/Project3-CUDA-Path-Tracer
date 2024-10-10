@@ -6,6 +6,19 @@
             "TYPE":"Emitting",
             "RGB":[1.0,1.0,1.0],
             "EMITTANCE":5.0
+        },
+        "diffuse_white":
+        {
+            "TYPE":"Diffuse",
+            "RGB":[1.0, 1.0, 1.0]
+        },
+        "glass":
+        {
+            "TYPE":"Glass",
+            "RGB":[1.0, 1.00, 1.0],
+            "ROUGHNESS":1.0,
+            "IOR":1.1,
+            "DISPERSION":0.8
         }
     },
     "Camera":
@@ -19,14 +32,19 @@
         "LOOKAT":[0.0,5.0,0.0],
         "UP":[0.0,1.0,0.0]
     },
+    "EnvironmentMap":
+    {
+        "FILE":"../scenes/Assets/Environments/terrace.hdr"
+    },
     "Objects":
     [
         {
-            "TYPE":"sphere",
-            "MATERIAL":"light",
+            "TYPE":"mesh",
+            "MATERIAL":"diffuse_white",
+            "FILE":"../scenes/Assets/Saul/saul.gltf",
             "TRANS":[0.0,0.0,0.0],
             "ROTAT":[0.0,0.0,0.0],
-            "SCALE":[3.0,3.0,3.0]
+            "SCALE":[5.0,5.0,5.0]
         }
     ]
 }

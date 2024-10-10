@@ -50,6 +50,9 @@ set(GLM_ROOT_DIR "${CMAKE_SOURCE_DIR}/external")
 find_package(GLM REQUIRED)
 include_directories(${GLM_INCLUDE_DIRS})
 
+include_directories(${CMAKE_SOURCE_DIR}/external/include)
+link_directories(${CMAKE_SOURCE_DIR}/external/lib)
+
 set(headers
     src/main.h
     src/image.h
@@ -74,6 +77,7 @@ set(sources
     src/scene.cpp
     src/preview.cpp
     src/utilities.cpp
+    src/tiny_gltf.cpp
 )
 
 set(imgui_headers
@@ -124,7 +128,16 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
     ${LIBRARIES}
     cudadevrt
     #stream_compaction  # TODO: uncomment if using your stream compaction
+    OpenImageDenoise
     )
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE "$<$<AND:$<CONFIG:Debug,RelWithDebInfo>,$<COMPILE_LANGUAGE:CUDA>>:-G;-src-in-ptx>")
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE "$<$<AND:$<CONFIG:Release>,$<COMPILE_LANGUAGE:CUDA>>:-lineinfo;-src-in-ptx>")
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${CMAKE_PROJECT_NAME})
+
+file(GLOB OIDN_DLLS "${CMAKE_SOURCE_DIR}/external/bin/*.dll")
+foreach(DLL ${OIDN_DLLS})
+    add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
+                       COMMAND ${CMAKE_COMMAND} -E copy
+                       "${DLL}"
+                       "$<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>")
+endforeach()

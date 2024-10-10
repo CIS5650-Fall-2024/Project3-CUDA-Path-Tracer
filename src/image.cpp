@@ -1,12 +1,29 @@
 #include <iostream>
 #include <string>
 #include <stb_image_write.h>
+#include <stb_image.h>
 
 #include "image.h"
 
 Image::Image(int x, int y)
     : xSize(x), ySize(y), pixels(new glm::vec3[x * y]) 
 {}
+
+Image::Image(const std::string& filename)
+{
+	int n;
+	float *data = stbi_loadf(filename.c_str(), &xSize, &ySize, &n, 3);
+    if (!data)
+    {
+		std::cerr << "Failed to load image: " << filename << std::endl;
+		exit(-1);
+	}
+
+	pixels = new glm::vec3[xSize * ySize];
+	memcpy(pixels, data, xSize * ySize * sizeof(glm::vec3));
+
+	stbi_image_free(data);
+}
 
 Image::~Image()
 {

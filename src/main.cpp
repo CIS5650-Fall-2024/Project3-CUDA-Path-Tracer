@@ -97,7 +97,11 @@ void saveImage()
         {
             int index = x + (y * width);
             glm::vec3 pix = renderState->image[index];
+#if !DENOISE
             img.setPixel(width - 1 - x, y, glm::vec3(pix) / samples);
+#else
+			img.setPixel(width - 1 - x, y, glm::vec3(pix));
+#endif
         }
     }
 
