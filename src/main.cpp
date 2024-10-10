@@ -1,6 +1,10 @@
 #include "main.h"
 #include "preview.h"
 #include <cstring>
+#include <iostream>
+
+#define TINYOBJLOADER_IMPLEMENTATION
+#include "tiny_obj_loader.h"
 
 static std::string startTimeString;
 
@@ -78,10 +82,10 @@ int main(int argc, char** argv)
     // Initialize ImGui Data
     InitImguiData(guiData);
     InitDataContainer(guiData);
-
+    
     // GLFW main loop
     mainLoop();
-
+    
     return 0;
 }
 

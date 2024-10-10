@@ -7,6 +7,10 @@
 #include "glm/glm.hpp"
 #include "utilities.h"
 #include "sceneStructs.h"
+#include "bsdf.h"
+#include "light.h"
+#include "bvh.h"
+#include "tiny_obj_loader.h"
 
 using namespace std;
 
@@ -20,6 +24,9 @@ public:
     ~Scene();
 
     std::vector<Geom> geoms;
-    std::vector<Material> materials;
+    std::vector<Primitive> prims;
+    std::vector<BVHNode> bvh;
+    std::vector<BSDF> materials;
+    std::vector<Light> lights;
     RenderState state;
 };

@@ -71,3 +71,30 @@ __host__ __device__ float sphereIntersectionTest(
     glm::vec3& intersectionPoint,
     glm::vec3& normal,
     bool& outside);
+
+__host__ __device__ float triangleIntersectionTest(
+    Geom sphere,
+    Primitive p,
+    Ray r,
+    glm::vec3& intersectionPoint,
+    glm::vec3& normal,
+    bool& outside);
+
+
+__device__ bool boxIntersection(
+    Geom& box,
+    Primitive& p,
+    Ray& r,
+    ShadeableIntersection& intersection);
+
+__device__ bool sphereIntersection(
+    Geom& sphere,
+    Primitive& p,
+    Ray& r,
+    ShadeableIntersection& intersection);
+
+__device__ bool triangleIntersection(
+    Geom& tri,
+    Primitive& p,
+    Ray& r,
+    ShadeableIntersection& intersection);
