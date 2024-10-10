@@ -10,7 +10,8 @@
 enum GeomType
 {
     SPHERE,
-    CUBE
+    CUBE,
+    CUSTOM_MESH
 };
 
 struct Ray
@@ -19,16 +20,32 @@ struct Ray
     glm::vec3 direction;
 };
 
+struct Triangle {
+    glm::vec3 v0, v1, v2; // Vertices
+    glm::vec3 n0, n1, n2; // Normals
+    glm::vec2 uv0, uv1, uv2; // UV coordinates
+};
+
 struct Geom
 {
-    enum GeomType type;
+    GeomType type;
     int materialid;
+
+    // Transformation matrices
     glm::vec3 translation;
     glm::vec3 rotation;
     glm::vec3 scale;
     glm::mat4 transform;
     glm::mat4 inverseTransform;
     glm::mat4 invTranspose;
+
+    // For custom meshes
+    int triangleStartIndex;
+    int triangleCount;
+
+    // Bounding box in object space
+    glm::vec3 bboxMin;
+    glm::vec3 bboxMax;
 };
 
 struct Material
@@ -43,7 +60,24 @@ struct Material
     float hasRefractive;
     float indexOfRefraction;
     float emittance;
+
+    // Texture indices (-1 if not used)
+    int baseColorTextureIndex;
+    int normalTextureIndex;
+
+    bool isProcedural;
+    glm::vec3 proceduralColor1;
+    glm::vec3 proceduralColor2;
+    float proceduralScale;
 };
+
+struct Texture {
+    int width;
+    int height;
+    int components; // Number of color channels (e.g., 3 for RGB, 4 for RGBA)
+    std::vector<unsigned char> imageData; // Image pixel data
+};
+
 
 struct Camera
 {
@@ -55,6 +89,10 @@ struct Camera
     glm::vec3 right;
     glm::vec2 fov;
     glm::vec2 pixelLength;
+
+
+    float lensRadius;    // Aperture size
+    float focalDistance; // Focal length
 };
 
 struct RenderState
@@ -74,12 +112,12 @@ struct PathSegment
     int remainingBounces;
 };
 
-// Use with a corresponding PathSegment to do:
-// 1) color contribution computation
-// 2) BSDF evaluation: generate a new ray
-struct ShadeableIntersection
-{
-  float t;
-  glm::vec3 surfaceNormal;
-  int materialId;
+struct ShadeableIntersection {
+    float t;
+    glm::vec3 surfaceNormal;
+    int materialId;
+    int triangleIndex;         // Index of the intersected triangle (-1 if not a triangle)
+    glm::vec3 barycentricCoords; // Barycentric coordinates at the intersection point
+    GeomType hitGeomType;      // Type of geometry intersected
+    int geomIndex;             // Index of the geometry that was hit
 };

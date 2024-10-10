@@ -7,6 +7,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/matrix_inverse.hpp>
 #include <iostream>
+#include <glm/gtc/type_ptr.hpp>         // For make_mat4
+
 #include <cstdio>
 
 #include "utilities.h"

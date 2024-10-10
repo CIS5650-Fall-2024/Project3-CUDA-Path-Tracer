@@ -91,12 +91,12 @@ __host__ __device__ float sphereIntersectionTest(
     }
     else if (t1 > 0 && t2 > 0)
     {
-        t = min(t1, t2);
+        t = glm::min(t1, t2);
         outside = true;
     }
     else
     {
-        t = max(t1, t2);
+        t = glm::max(t1, t2);
         outside = false;
     }
 
@@ -110,4 +110,109 @@ __host__ __device__ float sphereIntersectionTest(
     }
 
     return glm::length(r.origin - intersectionPoint);
+}
+
+
+__host__ __device__ bool triangleIntersectionTest(
+    Ray r,
+    Triangle triangle,
+    float& t,
+    glm::vec3& baryPosition)
+{
+    // Möller–Trumbore intersection algorithm
+    const float epsilon = 1e-8f;
+    glm::vec3 vertex0 = triangle.v0;
+    glm::vec3 vertex1 = triangle.v1;
+    glm::vec3 vertex2 = triangle.v2;
+
+    glm::vec3 edge1 = vertex1 - vertex0;
+    glm::vec3 edge2 = vertex2 - vertex0;
+    glm::vec3 h = glm::cross(r.direction, edge2);
+    float a = glm::dot(edge1, h);
+
+    if (fabs(a) < epsilon)
+        return false; // Ray is parallel to triangle
+
+    float f = 1.0f / a;
+    glm::vec3 s = r.origin - vertex0;
+    float u = f * glm::dot(s, h);
+    if (u < 0.0f || u > 1.0f)
+        return false;
+
+    glm::vec3 q = glm::cross(s, edge1);
+    float v = f * glm::dot(r.direction, q);
+    if (v < 0.0f || u + v > 1.0f)
+        return false;
+
+    float temp_t = f * glm::dot(edge2, q);
+    if (temp_t > epsilon)
+    {
+        t = temp_t;
+        baryPosition = glm::vec3(u, v, 0.0f);
+        return true;
+    }
+    else
+        return false;
+}
+
+__device__ void swap(float& a, float& b) {
+    float temp = a;
+    a = b;
+    b = temp;
+};
+
+__device__ bool aabbIntersectionTest(const Ray& ray, const glm::vec3& min, const glm::vec3& max, float& t)
+{
+    float tmin = (min.x - ray.origin.x) / ray.direction.x;
+    float tmax = (max.x - ray.origin.x) / ray.direction.x;
+
+    // Swap tmin and tmax if needed
+    if (tmin > tmax) swap(tmin, tmax);
+
+    float tymin = (min.y - ray.origin.y) / ray.direction.y;
+    float tymax = (max.y - ray.origin.y) / ray.direction.y;
+
+    // Swap tymin and tymax if needed
+    if (tymin > tymax) swap(tymin, tymax);
+
+    if ((tmin > tymax) || (tymin > tmax))
+        return false;
+
+    if (tymin > tmin)
+        tmin = tymin;
+
+    if (tymax < tmax)
+        tmax = tymax;
+
+    float tzmin = (min.z - ray.origin.z) / ray.direction.z;
+    float tzmax = (max.z - ray.origin.z) / ray.direction.z;
+
+    // Swap tzmin and tzmax if needed
+    if (tzmin > tzmax) swap(tzmin, tzmax);
+
+    if ((tmin > tzmax) || (tzmin > tmax))
+        return false;
+
+    if (tzmin > tmin)
+        tmin = tzmin;
+
+    if (tzmax < tmax)
+        tmax = tzmax;
+
+    // Check if the ray starts inside the box
+    bool inside = (ray.origin.x > min.x && ray.origin.x < max.x) &&
+        (ray.origin.y > min.y && ray.origin.y < max.y) &&
+        (ray.origin.z > min.z && ray.origin.z < max.z);
+
+    // If the ray starts inside the box, we need to use tmax as the exit point
+    if (inside)
+    {
+        t = tmax;
+    }
+    else
+    {
+        t = tmin;
+    }
+
+    return t >= 0.0f;
 }
