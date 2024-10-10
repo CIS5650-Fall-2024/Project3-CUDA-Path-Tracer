@@ -1,0 +1,19 @@
+// Loading a normal sphere
+{
+    "TYPE":"mesh",
+    "MESH_PATH":"/home/w123/Desktop/paulina/cis5650/Project3-CUDA-Path-Tracer/scenes/test_loadMesh/obj/sphere.obj",
+    "MATERIAL":"diffuse_white",
+    "TRANS":[0.0,4.0,0.0],
+    "ROTAT":[0.0, 0.0, 0.0],
+    "SCALE":[2.0,2.0,2.0]
+}
+
+// Loading a nice duck
+{
+    "TYPE":"mesh",
+    "MESH_PATH":"/home/w123/Desktop/paulina/cis5650/Project3-CUDA-Path-Tracer/scenes/test_loadMesh/gltf/duck/Duck.gltf",
+    "MATERIAL":"diffuse_white",
+    "TRANS":[0.0,-0.5,0.0],
+    "ROTAT":[0.0, -150.0, 0.0],
+    "SCALE":[0.05,0.05,0.05]
+}

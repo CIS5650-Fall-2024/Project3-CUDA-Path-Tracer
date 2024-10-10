@@ -1,7 +1,9 @@
 set(headers
+    "thrust.h"
     )
 
 set(sources
+    "thrust.cu"
     )
 
 list(SORT headers)
@@ -11,8 +13,9 @@ source_group(Headers FILES ${headers})
 source_group(Sources FILES ${sources})
 
 add_library(stream_compaction ${sources} ${headers})
+
 if(CMAKE_VERSION VERSION_LESS "3.23.0")
-    set_target_properties(stream_compaction} PROPERTIES CUDA_ARCHITECTURES OFF)
+    set_target_properties(stream_compaction PROPERTIES CUDA_ARCHITECTURES OFF)
 elseif(CMAKE_VERSION VERSION_LESS "3.24.0")
     set_target_properties(stream_compaction PROPERTIES CUDA_ARCHITECTURES all-major)
 else()

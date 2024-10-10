@@ -1,14 +1,17 @@
 #pragma once
 
-#include "intersections.h"
 #include <glm/glm.hpp>
 #include <thrust/random.h>
+
+#include "intersections.h"
+#include "bsdf.h"
+
 // CHECKITOUT
 /**
  * Computes a cosine-weighted random direction in a hemisphere.
  * Used for diffuse lighting.
  */
-__host__ __device__ glm::vec3 calculateRandomDirectionInHemisphere(
+__host__ __device__ glm::vec3 squareToCosineHemisphere(
     glm::vec3 normal, 
     thrust::default_random_engine& rng);
 
@@ -39,7 +42,12 @@ __host__ __device__ glm::vec3 calculateRandomDirectionInHemisphere(
  */
 __host__ __device__ void scatterRay(
     PathSegment& pathSegment,
-    glm::vec3 intersect,
+    glm::vec3 woW,
     glm::vec3 normal,
+    glm::vec3 &wiW,
+    float &pdf,
+    glm::vec3 &c,
+    float &eta,
     const Material& m,
+    const TextureValues& texVals,
     thrust::default_random_engine& rng);

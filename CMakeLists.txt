@@ -61,6 +61,10 @@ set(headers
     src/sceneStructs.h
     src/preview.h
     src/utilities.h
+    src/warp.h
+    src/bsdf.h
+    src/meshLoader.h
+    src/bvh.h
 )
 
 set(sources
@@ -74,6 +78,10 @@ set(sources
     src/scene.cpp
     src/preview.cpp
     src/utilities.cpp
+    src/warp.cu
+    src/bsdf.cu
+    src/meshLoader.cpp
+    src/bvh.cpp
 )
 
 set(imgui_headers
@@ -98,18 +106,42 @@ set(imgui_sources
     src/ImGui/imgui_widgets.cpp
 )
 
+set(tinyobj_headers
+    src/tinyobjloader/tiny_obj_loader.h
+)
+
+set(tinyobj_sources
+    src/tinyobjloader/tiny_obj_loader.cc
+)
+
+set(tinygltf_headers
+    src/tinygltf/tiny_gltf.h
+)
+
+set(tinygltf_sources
+    src/tinygltf/tiny_gltf.cc
+)
+
 list(SORT headers)
 list(SORT sources)
 list(SORT imgui_headers)
 list(SORT imgui_sources)
+list(SORT tinyobj_headers)
+list(SORT tinyobj_sources)
+list(SORT tinygltf_headers)
+list(SORT tinygltf_sources)
 
 source_group("Headers" FILES ${headers})
 source_group("Sources" FILES ${sources})
 source_group("ImGui\\Headers" FILES ${imgui_headers})
 source_group("ImGui\\Sources" FILES ${imgui_sources})
+source_group("tinyobj\\Headers" FILES ${tinyobj_headers})
+source_group("tinyobj\\Sources" FILES ${tinyobj_sources})
+source_group("tinygltf\\Headers" FILES ${tinygltf_headers})
+source_group("tinygltf\\Sources" FILES ${tinygltf_sources})
 
 #add_subdirectory(src/ImGui)
-#add_subdirectory(stream_compaction)  # TODO: uncomment if using your stream compaction
+add_subdirectory(stream_compaction)  # TODO: uncomment if using your stream compaction
 
 add_executable(${CMAKE_PROJECT_NAME} ${sources} ${headers} ${imgui_sources} ${imgui_headers})
 set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
@@ -123,7 +155,7 @@ endif()
 target_link_libraries(${CMAKE_PROJECT_NAME}
     ${LIBRARIES}
     cudadevrt
-    #stream_compaction  # TODO: uncomment if using your stream compaction
+    stream_compaction  # TODO: uncomment if using your stream compaction
     )
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE "$<$<AND:$<CONFIG:Debug,RelWithDebInfo>,$<COMPILE_LANGUAGE:CUDA>>:-G;-src-in-ptx>")
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE "$<$<AND:$<CONFIG:Release>,$<COMPILE_LANGUAGE:CUDA>>:-lineinfo;-src-in-ptx>")

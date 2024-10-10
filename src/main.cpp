@@ -155,6 +155,11 @@ void runCuda()
 
         // unmap buffer object
         cudaGLUnmapBufferObject(pbo);
+
+        // Define your own save interval
+        if (iteration % 50 == 0) {
+            saveImage();
+        }
     }
     else
     {

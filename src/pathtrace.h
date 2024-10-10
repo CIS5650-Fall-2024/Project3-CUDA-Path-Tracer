@@ -1,7 +1,10 @@
 #pragma once
 
 #include <vector>
+
+#include <thrust/partition.h>
 #include "scene.h"
+#include "warp.h"
 
 void InitDataContainer(GuiDataContainer* guiData);
 void pathtraceInit(Scene *scene);

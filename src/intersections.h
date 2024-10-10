@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtx/intersect.hpp>
+#include <glm/gtc/constants.hpp>  // For glm::infinity
 
 #include "sceneStructs.h"
 #include "utilities.h"
@@ -67,6 +68,31 @@ __host__ __device__ float boxIntersectionTest(
  */
 __host__ __device__ float sphereIntersectionTest(
     Geom sphere,
+    Ray r,
+    glm::vec3& intersectionPoint,
+    glm::vec3& normal,
+    bool& outside);
+
+/**
+ * @brief Test intersection between a ray and a mesh by looping through all triangles.
+ * 
+ * @param mesh 
+ * @param r 
+ * @param intersectionPoint Output parameter for point of intersection.
+ * @param normal Output parameter for surface normal.
+ * @param outside Output param for whether the ray came from outside.
+ * @return float Ray parameter `t` value. -1 if no intersection.
+ */
+__host__ __device__ float meshIntersectionTestNaive(
+    Geom mesh,
+    Ray r,
+    glm::vec3& intersectionPoint,
+    glm::vec3& normal,
+    glm::vec2& uv,
+    bool& outside);
+
+__host__ __device__ float meshIntersectionTestBVH (
+    Geom mesh,
     Ray r,
     glm::vec3& intersectionPoint,
     glm::vec3& normal,
