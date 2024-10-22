@@ -6,6 +6,10 @@
 #include "sceneStructs.h"
 #include "utilities.h"
 
+#include "glTFLoader.h"
+
+using uint = unsigned int;
+
 /**
  * Handy-dandy hash function that provides seeds for random number generation.
  */
@@ -27,7 +31,7 @@ __host__ __device__ inline unsigned int utilhash(unsigned int a)
  */
 __host__ __device__ inline glm::vec3 getPointOnRay(Ray r, float t)
 {
-    return r.origin + (t - .0001f) * glm::normalize(r.direction);
+    return r.origin + t * glm::normalize(r.direction);
 }
 
 /**
@@ -38,6 +42,19 @@ __host__ __device__ inline glm::vec3 multiplyMV(glm::mat4 m, glm::vec4 v)
     return glm::vec3(m * v);
 }
 
+__host__ __device__ float rectangleIntersectionTest(
+    AreaLight light,
+    Ray r,
+    float radiusU,
+    float radiusV,
+    const glm::vec3& pos,
+    const glm::vec3& normal,
+    glm::vec2& UV);
+
+//float rectangleIntersect(vec3 pos, vec3 normal,
+//    float radiusU, float radiusV,
+//    vec3 rayOrigin, vec3 rayDirection,
+//    out vec2 out_uv, mat4 invT);
 // CHECKITOUT
 /**
  * Test intersection between a ray and a transformed cube. Untransformed,
@@ -71,3 +88,42 @@ __host__ __device__ float sphereIntersectionTest(
     glm::vec3& intersectionPoint,
     glm::vec3& normal,
     bool& outside);
+
+
+__host__ __device__ float triangleIntersectionTest(
+    Ray r,
+    const MeshTriangle& tri,
+    glm::vec3& intersectionPoint,
+    glm::vec3& normal);
+
+__device__ void computeBarycentricWeights(const glm::vec3& p, const glm::vec3& A, const glm::vec3& B, const glm::vec3& C, glm::vec3& weights);
+
+__device__ bool intersectAABB(const Ray& r, const AABB& aabb);
+
+__device__ bool AreaLightIntersect(ShadeableIntersection& intr, Ray r,
+    MeshTriangle* triangles, BVHNode* bvhNodes,
+    AreaLight* areaLights,
+    int areaLightIdx);
+
+__device__ bool AllLightIntersectTest(ShadeableIntersection& intr, Ray r,
+    MeshTriangle* triangles, BVHNode* bvhNodes,
+    AreaLight* areaLights,
+    int num_areaLights);
+
+__device__ bool DirectLightIntersectTest(ShadeableIntersection& intr, Ray r,
+    MeshTriangle* triangles, BVHNode* bvhNodes,
+    AreaLight* areaLights,
+    int num_areaLights);
+
+//__device__ bool DirectLightBVHIntersect(Ray r,
+//    MeshTriangle* triangles, BVHNode* bvhNodes);
+
+__device__ void BVHIntersect(Ray r, ShadeableIntersection& intersection,
+    MeshTriangle* triangles, BVHNode* bvhNodes, cudaTextureObject_t* texObjs);
+
+__device__ void SceneIntersect(ShadeableIntersection& isect, Ray r,
+    MeshTriangle* triangles, BVHNode* bvhNodes,
+    cudaTextureObject_t* texObjs,
+    AreaLight* areaLights,
+    int num_areaLights,
+    bool BVHEmpty);

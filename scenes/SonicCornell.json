@@ -1,0 +1,99 @@
+{
+    "Materials":
+    {
+        "0:BackWall":
+        {
+            "TYPE":1,
+            "RGB":[0.2, 0.2, 0.2],
+            "ROUGHNESS":0.3
+        },
+        "1:FloorCeiling":
+        {
+            "TYPE":1,
+            "RGB":[0.2, 0.2, 0.2],
+            "ROUGHNESS":0.0
+        },
+        "2:TopLight":
+        {
+            "TYPE":0,
+            "RGB":[1.0, 1.0, 1.0],
+            "EMITTANCE":8.0
+        },
+        "3:Blue":
+        {
+            "TYPE":3,
+            "RGB":[0.7, 0.8, 1.0],
+            "ROUGHNESS":0.1
+        },
+        "4:Offwhite":
+        {
+            "TYPE":3,
+            "RGB":[1.0, 1.0, 1.0],
+            "ROUGHNESS":0.1
+        },
+        "5:BLACK":
+        {
+            "TYPE":3,
+            "RGB":[0.0, 0.0, 0.0],
+            "ROUGHNESS":0.1
+        },
+        "6:Skin Color":
+        {
+            "TYPE":3,
+            "RGB":[1.0, 0.85, 0.8],
+            "ROUGHNESS":0.1
+        },
+        "7:Red":
+        {
+            "TYPE":3,
+            "RGB":[1.0, 0.8, 0.8],
+            "ROUGHNESS":0.1
+        },
+        "8:Gold":
+        {
+            "TYPE":3,
+            "RGB":[1.0, 0.9, 0.5],
+            "ROUGHNESS":0.1
+        },
+        "9:BackLight":
+        {
+            "TYPE":0,
+            "RGB":[1.0, 1.0, 1.0],
+            "EMITTANCE":20.0
+        },
+        "10:LeftWall":
+        {
+            "TYPE":1,
+            "RGB":[0.2, 0.2, 0.2],
+            "ROUGHNESS":0.3
+        },
+        "11:RightWall":
+        {
+            "TYPE":1,
+            "RGB":[0.2, 0.2, 0.2],
+            "ROUGHNESS":0.1
+        }
+    },
+    "Camera":
+    {
+        "RES":[800,800],
+        "FOVY":45.0,
+        "ITERATIONS":100,
+        "DEPTH":10,
+        "FILE":"SonicCornell",
+        "EYE":[0.0,5.0,10.5],
+        "LOOKAT":[0.0,5.0,0.0],
+        "UP":[0.0,1.0,0.0]
+    },
+    "Objects":
+    [
+        {
+            "TYPE":"mesh",
+            "MATERIAL":"diffuse_white",
+            "FILEPATH":"C:/Users/cloga/LocalData/CIS565/Models/SonicCornell/SonicCornell.gltf",
+            "TRANS":[0.0,1.0,4.0],
+            "ROTAT":[0.0,0.0,0.0],
+            "SCALE":[1.0,1.0,1.0]
+        }
+    ]
+}

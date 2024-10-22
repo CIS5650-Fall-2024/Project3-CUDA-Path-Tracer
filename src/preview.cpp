@@ -1,4 +1,4 @@
-//#define _CRT_SECURE_NO_DEPRECATE
+﻿//#define _CRT_SECURE_NO_DEPRECATE
 #include <ctime>
 #include "main.h"
 #include "preview.h"
@@ -159,7 +159,7 @@ bool init()
         exit(EXIT_FAILURE);
     }
 
-    window = glfwCreateWindow(width, height, "CIS 565 Path Tracer", NULL, NULL);
+    window = glfwCreateWindow(width, height, "Logan's Path Tracer", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -204,7 +204,6 @@ void InitImguiData(GuiDataContainer* guiData)
     imguiData = guiData;
 }
 
-
 // LOOK: Un-Comment to check ImGui Usage
 void RenderImGui()
 {
@@ -217,25 +216,34 @@ void RenderImGui()
     bool show_demo_window = true;
     bool show_another_window = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-    static float f = 0.0f;
+    //static float f = 0.0f;
     static int counter = 0;
 
     ImGui::Begin("Path Tracer Analytics");                  // Create a window called "Hello, world!" and append into it.
-    
+    //ImGui::Text("*-~=*=~-*-~=*=~-*-~=*=~-*-~=*=~-*-~=*=~-*-~=*=");
     // LOOK: Un-Comment to check the output window and usage
-    //ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+    
     //ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
     //ImGui::Checkbox("Another Window", &show_another_window);
-
-    //ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+    ImGui::Text("Scene File: ");
+    ImGui::SameLine();
+    ImGui::Text(imguiData->filePath.data());
+    ImGui::Text("Denoise % ");
+    ImGui::SameLine();
+    ImGui::SliderFloat("100%", &imguiData->PercentDenoise, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
     //ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
-
-    //if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-    //    counter++;
-    //ImGui::SameLine();
-    //ImGui::Text("counter = %d", counter);
-    ImGui::Text("Traced Depth %d", imguiData->TracedDepth);
+    ImGui::Text("Toggle Stream Compaction:");
+    ImGui::SameLine();
+    ImGui::Checkbox(" ", &imguiData->StreamCompaction);
+    ImGui::Text("Toggle Sort By Material:");
+    ImGui::SameLine();
+    ImGui::Checkbox(" ", &imguiData->SortByMat);
+    ImGui::Text("Traced Depth: %d", imguiData->TracedDepth);
     ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+    //std::cout << "fps: " << ImGui::GetIO().Framerate << "\n";
+    ImGui::Text("\n");
+    ImGui::Text("                            : ) have fun! - LC");               // Display some text (you can use a format strings too)
+    ImGui::Text("*-~=*=~-*-~=*=~-*-~=*=~-*-~=*=~-*-~=*=~-*-~=*=");
     ImGui::End();
 
 
@@ -257,7 +265,7 @@ void mainLoop()
 
         runCuda();
 
-        string title = "CIS565 Path Tracer | " + utilityCore::convertIntToString(iteration) + " Iterations";
+        string title = "Logan's Path Tracer | " + utilityCore::convertIntToString(iteration) + " Iterations/SPP so far";
         glfwSetWindowTitle(window, title.c_str());
         glBindBuffer(GL_PIXEL_UNPACK_BUFFER, pbo);
         glBindTexture(GL_TEXTURE_2D, displayImage);

@@ -2,6 +2,8 @@
 
 extern GLuint pbo;
 
+
+//static float percentDenoise;
 std::string currentTimeString();
 bool init();
 void mainLoop();

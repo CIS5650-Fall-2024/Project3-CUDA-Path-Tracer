@@ -27,6 +27,9 @@ int iteration;
 int width;
 int height;
 
+oidn::DeviceRef oidn_device;
+oidn::FilterRef oidn_filter;
+
 //-------------------------------
 //-------------MAIN--------------
 //-------------------------------
@@ -47,7 +50,7 @@ int main(int argc, char** argv)
     scene = new Scene(sceneFile);
 
     //Create Instance for ImGUIData
-    guiData = new GuiDataContainer();
+    guiData = new GuiDataContainer(sceneFile);
 
     // Set up camera stuff from loaded path tracer settings
     iteration = 0;
@@ -75,6 +78,17 @@ int main(int argc, char** argv)
     // Initialize CUDA and GL components
     init();
 
+    // Initialize OIDN
+    oidn_device = oidn::newDevice(oidn::DeviceType::CUDA);
+    oidn_device.commit();
+
+    oidn_filter = oidn_device.newFilter("RT");
+
+    //oidn_filter.set("hdr", true);  // If using HDR
+    oidn_filter.set("cleanAux", true);
+    oidn_filter.set("quality", "high");
+    oidn_filter.set("maxMemoryMB", 3000);
+
     // Initialize ImGui Data
     InitImguiData(guiData);
     InitDataContainer(guiData);
@@ -97,7 +111,7 @@ void saveImage()
         {
             int index = x + (y * width);
             glm::vec3 pix = renderState->image[index];
-            img.setPixel(width - 1 - x, y, glm::vec3(pix) / samples);
+            img.setPixel(width - 1 - x, y, glm::vec3(pix)); //used to divide by sample, but not anymore!! we are doing converge every frame!
         }
     }
 
@@ -145,13 +159,18 @@ void runCuda()
 
     if (iteration < renderState->iterations)
     {
+        if (iteration % 100 == 0) {
+            saveImage();
+        }
+
         uchar4* pbo_dptr = NULL;
         iteration++;
         cudaGLMapBufferObject((void**)&pbo_dptr, pbo);
 
         // execute the kernel
         int frame = 0;
-        pathtrace(pbo_dptr, frame, iteration);
+        //percentDenoise = 0.5;
+        pathtrace(pbo_dptr, oidn_filter, guiData->PercentDenoise, frame, iteration);
 
         // unmap buffer object
         cudaGLUnmapBufferObject(pbo);

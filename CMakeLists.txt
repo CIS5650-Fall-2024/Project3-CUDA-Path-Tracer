@@ -50,6 +50,13 @@ set(GLM_ROOT_DIR "${CMAKE_SOURCE_DIR}/external")
 find_package(GLM REQUIRED)
 include_directories(${GLM_INCLUDE_DIRS})
 
+find_package(OpenImageDenoise REQUIRED
+    HINTS "C:/Users/cloga/LocalData/CIS565/oidn"
+)
+include_directories(${OpenImageDenoise_INCLUDE_DIRS})
+
+#add_definitions(-DTINYGLTF_IMPLEMENTATION -DSTB_IMAGE_IMPLEMENTATION -DSTB_IMAGE_WRITE_IMPLEMENTATION)
+
 set(headers
     src/main.h
     src/image.h
@@ -61,6 +68,8 @@ set(headers
     src/sceneStructs.h
     src/preview.h
     src/utilities.h
+    src/glTFLoader.h
+    src/Light.h
 )
 
 set(sources
@@ -74,6 +83,8 @@ set(sources
     src/scene.cpp
     src/preview.cpp
     src/utilities.cpp
+    src/glTFLoader.cpp
+    src/Light.cu
 )
 
 set(imgui_headers
@@ -124,7 +135,10 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
     ${LIBRARIES}
     cudadevrt
     #stream_compaction  # TODO: uncomment if using your stream compaction
+    OpenImageDenoise
     )
+# target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE OpenImageDenoise)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/external/include)
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE "$<$<AND:$<CONFIG:Debug,RelWithDebInfo>,$<COMPILE_LANGUAGE:CUDA>>:-G;-src-in-ptx>")
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE "$<$<AND:$<CONFIG:Release>,$<COMPILE_LANGUAGE:CUDA>>:-lineinfo;-src-in-ptx>")
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${CMAKE_PROJECT_NAME})

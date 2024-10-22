@@ -20,6 +20,8 @@
 #include "utilities.h"
 #include "scene.h"
 
+#include <OpenImageDenoise/oidn.hpp>
+
 using namespace std;
 
 //-------------------------------
